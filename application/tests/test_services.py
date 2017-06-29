@@ -36,37 +36,31 @@ def test_player_news_report():
         'summary': [
             {
                 'type': 'nb_games_played',
-                'name': 'Match Joués',
                 'value': 25
             },
             {
                 'type': 'nb_games_started',
-                'name': 'Titulaire',
                 'value': 23
             },
             {
                 'type': 'nb_games_not_started',
-                'name': 'Remplaçant',
                 'value': 2
             }
         ],
         'events': [
             {
                 'type': 'nb_goals',
-                'name': 'Buts',
                 'value': 7
             },
             {
                 'type': 'nb_assists',
-                'name': 'Passes D',
                 'value': 10
             }
         ],
         'stats': [
             {
                 'denominator': None,
-                'formula_id': 'passes_left',
-                'name': 'Left Passes',
+                'id': 'passes_left',
                 'from_date': '2015-08-30',
                 'interval': 2552.0,
                 'is_negative': False,
@@ -79,8 +73,7 @@ def test_player_news_report():
             },
             {
                 'denominator': None,
-                'formula_id': 'total_cross',
-                'name': 'Centres',
+                'id': 'total_cross',
                 'from_date': '2015-08-30',
                 'interval': 2552.0,
                 'is_negative': False,
@@ -93,8 +86,7 @@ def test_player_news_report():
             },
             {
                 'denominator': None,
-                'formula_id': 'total_scoring_att',
-                'name': 'Tirs',
+                'id': 'total_scoring_att',
                 'from_date': '2015-08-30',
                 'interval': 2552.0,
                 'is_negative': False,
@@ -105,52 +97,62 @@ def test_player_news_report():
                 'value': 0.0,
                 'rank': 1500
             },
-            {
-                'denominator': None,
-                'formula_id': 'total_contest',
-                'name': 'Dribbles',
-                'from_date': '2015-08-30',
-                'interval': 2552.0,
-                'is_negative': False,
-                'is_success_rate': False,
-                'numerator': 2.0,
-                'player_id': 'p9808',
-                'to_date': '2016-05-14',
-                'value': 2.0,
-                'rank': 152
-            },
-            {
-                'denominator': None,
-                'formula_id': 'interception',
-                'name': 'Interceptions',
-                'from_date': '2015-08-30',
-                'interval': 2552.0,
-                'is_negative': False,
-                'is_success_rate': False,
-                'numerator': 18.0,
-                'player_id': 'p9808',
-                'to_date': '2016-05-14',
-                'value': 18.0,
-                'rank': 85
-            },
-            {
-                'denominator': None,
-                'formula_id': 'red_card',
-                'name': 'Cartons rouges',
-                'from_date': '2015-08-30',
-                'interval': 2552.0,
-                'is_negative': False,
-                'is_success_rate': False,
-                'numerator': 3.0,
-                'player_id': 'p9808',
-                'to_date': '2016-05-14',
-                'value': 3.0,
-                'rank': 1
-            }
+            # {
+            #     'denominator': None,
+            #     'id': 'total_contest',
+            #     'from_date': '2015-08-30',
+            #     'interval': 2552.0,
+            #     'is_negative': False,
+            #     'is_success_rate': False,
+            #     'numerator': 2.0,
+            #     'player_id': 'p9808',
+            #     'to_date': '2016-05-14',
+            #     'value': 2.0,
+            #     'rank': 152
+            # },
+            # {
+            #     'denominator': None,
+            #     'id': 'interception',
+            #     'from_date': '2015-08-30',
+            #     'interval': 2552.0,
+            #     'is_negative': False,
+            #     'is_success_rate': False,
+            #     'numerator': 18.0,
+            #     'player_id': 'p9808',
+            #     'to_date': '2016-05-14',
+            #     'value': 18.0,
+            #     'rank': 85
+            # },
+            # {
+            #     'denominator': None,
+            #     'id': 'red_card',
+            #     'from_date': '2015-08-30',
+            #     'interval': 2552.0,
+            #     'is_negative': False,
+            #     'is_success_rate': False,
+            #     'numerator': 3.0,
+            #     'player_id': 'p9808',
+            #     'to_date': '2016-05-14',
+            #     'value': 3.0,
+            #     'rank': 1
+            # }
+        ],
+        'translations': [
+            {'identifier': 'nb_games_played', 'language': 'fr', 'translation': 'Matchs Joués'},
+            {'identifier': 'nb_games_started', 'language': 'fr', 'translation': 'Titulaire'},
+            {'identifier': 'nb_games_not_started', 'language': 'fr', 'translation': 'Remplaçant'},
+            {'identifier': 'nb_goals', 'language': 'fr', 'translation': 'Buts'},
+            {'identifier': 'nb_assists', 'language': 'fr', 'translation': 'Passes D'},
+            {'identifier': 'red_card', 'language': 'fr', 'translation': 'Cartons rouges'},
+            {'identifier': 'interception', 'language': 'fr', 'translation': 'Interceptions'},
+            {'identifier': 'total_contest', 'language': 'fr', 'translation': 'Dribbles'},
+            {'identifier': 'total_scoring_att', 'language': 'fr', 'translation': 'Tirs'},
+            {'identifier': 'total_cross', 'language': 'fr', 'translation': 'Centres'},
+            {'identifier': 'passes_left', 'language': 'fr', 'translation': 'Passes côté gauche'},
         ]
     }
 
-    svg = service.player_report(parameters, 500, 300, 'Impact', 'Impact', 'Impact', 'lightblue', 'darkblue')
+    svg = service.player_report(parameters, 800, 400, 'Impact', 'Impact', 'Impact', 'lightblue', 'darkblue')
 
     print(svg)
 

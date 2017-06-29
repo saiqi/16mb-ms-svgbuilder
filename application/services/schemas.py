@@ -43,21 +43,19 @@ class PlayerPositionSchema(Schema):
     offensive_versatile = fields.Float(required=True)
 
 
-class PlayerSummarySchema(Schema):
+class TypeValueSchema(Schema):
     type = fields.Str(required=True)
-    name = fields.Str(required=True)
     value = fields.Int(required=True)
 
 
-class PlayerEventSchema(Schema):
-    type = fields.Str(required=True)
-    name = fields.Str(required=True)
-    value = fields.Int(required=True)
+class TranslationSchema(Schema):
+    identifier = fields.Str(required=True)
+    translation = fields.Str(required=True)
+    language = fields.Str(required=True)
 
 
 class PlayerStatsSchema(Schema):
-    formula_id = fields.Str(required=True)
-    name = fields.Str(required=True)
+    id = fields.Str(required=True)
     from_date = fields.Str()
     to_date = fields.Str()
     interval = fields.Float(required=True)
@@ -78,8 +76,9 @@ class PlayerNewsReportSchema(Schema):
     competition_picture = fields.Str(allow_none=True)
     season_entity = fields.Nested(SeasonSchema, required=True)
     player_entity = fields.Nested(PlayerSchema, required=True)
-    summary = fields.List(fields.Nested(PlayerSummarySchema))
-    events = fields.List(fields.Nested(PlayerEventSchema))
+    summary = fields.List(fields.Nested(TypeValueSchema))
+    events = fields.List(fields.Nested(TypeValueSchema))
+    translations = fields.List(fields.Nested(TranslationSchema))
     stats = fields.List(fields.Nested(PlayerStatsSchema), required=True)
 
     @post_load

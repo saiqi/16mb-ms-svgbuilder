@@ -10,7 +10,7 @@ from application.services.reports.report import Report
 
 class PlayerNewsReport(Report):
     def __init__(self, title, background, player_picture, season_picture, competition_picture, season_entity,
-                 player_entity, summary, events, stats):
+                 player_entity, summary, events, stats, translations):
         self.title = title
         self.background = background
         self.player_picture = player_picture
@@ -21,6 +21,7 @@ class PlayerNewsReport(Report):
         self.summary = summary
         self.events = events
         self.stats = stats
+        self.translations = translations
 
     def to_svg(self, width, height, main_font, figure_font, title_font, primary_color, secondary_color):
         dwg = svgwrite.Drawing(size=(str(width) + 'px', str(height) + 'px'))
@@ -38,7 +39,7 @@ class PlayerNewsReport(Report):
 
             dwg.add(bg_el)
 
-        title_el, title_size = self._make_title(self.title, .75*width, .05*height, title_font, primary_color,
+        title_el, title_size = self._make_title(self.title, .75*width, .075*height, title_font, primary_color,
                                                 secondary_color)
 
         dwg.add(title_el)
@@ -47,7 +48,7 @@ class PlayerNewsReport(Report):
         entity_trans_y = int(math.floor(height*.2))
         entity_group = svgwrite.container.Group(class_='entity', id='entity',
                                                 transform='translate({},{})'.format(entity_trans_x, entity_trans_y))
-        entity_text_size = self._number_to_px(height*.1)
+        entity_text_size = self._number_to_px(height*.15)
         entity_text_style = '''
         font-family: {};
         font-size: {};
@@ -84,37 +85,40 @@ class PlayerNewsReport(Report):
         dwg.add(entity_group)
 
         for event in self.events:
-            event_el, event_size = self._make_event_label(event['type'], event['name'], event['value'], .9*.1*height,
-                                                          .1*height, figure_font, main_font, primary_color,
+            event_name = self._name_from_translations(event['type'], self.translations)
+            event_el, event_size = self._make_event_label(event['type'], event_name, event['value'], .9*.2*height,
+                                                          .2*height, figure_font, main_font, primary_color,
                                                           secondary_color)
 
             if event['type'] == 'nb_goals':
                 event_dx = int(math.floor((.66 + 1./12.)*width - .5*event_size[0]))
-                event_dy = int(math.floor(.175*height + .5*event_size[1]))
+                event_dy = int(math.floor(.35*height))
             else:
                 event_dx = int(math.floor((.66 + 1./4.)*width) - .5*event_size[0])
-                event_dy = int(math.floor(.175*height + .5*event_size[1]))
+                event_dy = int(math.floor(.35*height))
             event_el.translate(event_dx, event_dy)
             dwg.add(event_el)
 
         nb_stats = len(self.stats)
-        stat_vpadding = 10
-        stat_vshift = .5
+        stat_vpadding = .025*height
+        stat_vshift = .66
         stat_height = .1*height if (1.-stat_vshift)*height / nb_stats > .1*height else (1.-stat_vshift)*height / nb_stats
         for i, stat in enumerate(self.stats):
-            stat_el, stat_size = self._make_stat_label(stat['formula_id'], stat['name'].upper(),
+            stat_name = self._name_from_translations(stat['id'], self.translations)
+            stat_el, stat_size = self._make_stat_label(stat['id'], stat_name.upper(),
                                                        math.floor(stat['value']), stat['rank'],
                                                        .33*width, stat_height, figure_font,
                                                        main_font, primary_color, secondary_color)
             stat_dx = int(math.floor(.66*width))
-            stat_dy = int(math.floor(stat_vshift*height + i*(stat_height + stat_vpadding) - nb_stats*stat_vpadding))
+            stat_dy = int(math.floor(stat_vshift*height + i*(stat_height + stat_vpadding)))
             stat_el.translate(stat_dx, stat_dy)
             dwg.add(stat_el)
 
-        summary_el, summary_size = self._make_summary_label(self.season_entity, self.summary, .33*width, .1*height,
-                                                            figure_font, main_font, primary_color, secondary_color)
+        summary_el, summary_size = self._make_summary_label(self.season_entity, self.summary, .33*width, .2*height,
+                                                            figure_font, main_font, primary_color, secondary_color,
+                                                            self.translations)
         summary_dx = int(math.floor(.66*width))
-        summary_dy = int(math.floor(.075*height))
+        summary_dy = int(math.floor(.1*height))
         summary_el.translate(summary_dx, summary_dy)
         dwg.add(summary_el)
 

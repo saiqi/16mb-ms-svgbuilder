@@ -6,6 +6,11 @@ import svgwrite.path
 
 
 class Report(object):
+
+    @staticmethod
+    def _name_from_translations(identifier, translations):
+        return [r['translation'] for r in translations if r['identifier'] == identifier][0]
+
     @staticmethod
     def _number_to_px(number):
         return str(int(math.floor(number))) + 'px'
@@ -23,8 +28,13 @@ class Report(object):
         text_y = Report._number_to_px(.5 * height)
         text_x = '5px'
         text_length = Report._number_to_px(.9 * width)
+        text_style = '''
+        fill: {};
+        font-size: {};
+        font-family: {};
+        '''.format(secondary_color, Report._number_to_px(.9 * height), font)
         text_el = svgwrite.text.Text(title, x=[text_x], y=[text_y], textLength=text_length, fill=secondary_color,
-                                     dominant_baseline='central', style='font-family: {}'.format(font))
+                                     dominant_baseline='central', style=text_style.replace(' ', '').replace('\t', ''))
 
         group.add(text_el)
 
@@ -174,7 +184,7 @@ class Report(object):
 
     @staticmethod
     def _make_summary_label(season_entity, summary, width, height, figure_font, text_font, primary_color,
-                            secondary_color):
+                            secondary_color, translations):
         group = svgwrite.container.Group(id='summary', class_='summary')
 
         label_height = height
@@ -188,7 +198,7 @@ class Report(object):
         fill: {};
         font-size: {};
         font-family: {};
-        '''.format(primary_color, Report._number_to_px(.9 * season_height), text_font)
+        '''.format(primary_color, Report._number_to_px(.75 * season_height), text_font)
         season_name = season_entity['informations']['name']
         season_name_x = Report._number_to_px(.5 * season_width)
         season_name_y = Report._number_to_px(.5 * season_height)
@@ -234,6 +244,7 @@ class Report(object):
         group.add(nb_sub_el)
 
         for row in summary:
+            current_name = Report._name_from_translations(row['type'], translations)
             if row['type'] == 'nb_games_played':
                 nb_games_fig_x = Report._number_to_px(nb_games_x + .5 * nb_games_width)
                 nb_games_fig_y = Report._number_to_px(nb_games_y + .5 * nb_games_height)
@@ -254,7 +265,7 @@ class Report(object):
                 font-size: {};
                 font-family: {};
                 '''.format(secondary_color, Report._number_to_px(.75 * nb_games_height), text_font)
-                nb_games_name_text_el = svgwrite.text.Text(row['name'].upper(), x=[nb_games_name_txt_x],
+                nb_games_name_text_el = svgwrite.text.Text(current_name.upper(), x=[nb_games_name_txt_x],
                                                            y=[nb_games_name_txt_y], text_anchor='middle',
                                                            dominant_baseline='central',
                                                            style=nb_games_text.replace(' ', '').replace('\n', ''))
@@ -267,7 +278,7 @@ class Report(object):
                 font-size: {};
                 font-family: {};
                 '''.format(primary_color, Report._number_to_px(.5 * nb_start_height), text_font)
-                nb_games_fig_el = svgwrite.text.Text('{} {}'.format(str(row['value']), row['name'].lower()),
+                nb_games_fig_el = svgwrite.text.Text('{} {}'.format(str(row['value']), current_name.lower()),
                                                      x=[nb_games_fig_x], y=[nb_games_fig_y], text_anchor='middle',
                                                      dominant_baseline='central',
                                                      style=nb_games_style.replace(' ', '').replace('\n', ''))
@@ -280,7 +291,7 @@ class Report(object):
                 font-size: {};
                 font-family: {};
                 '''.format(primary_color, Report._number_to_px(.5 * nb_sub_height), text_font)
-                nb_games_fig_el = svgwrite.text.Text('{} {}'.format(str(row['value']), row['name'].lower()),
+                nb_games_fig_el = svgwrite.text.Text('{} {}'.format(str(row['value']), current_name.lower()),
                                                      x=[nb_games_fig_x], y=[nb_games_fig_y], text_anchor='middle',
                                                      dominant_baseline='central',
                                                      style=nb_games_style.replace(' ', '').replace('\n', ''))

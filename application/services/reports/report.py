@@ -243,9 +243,9 @@ class Report(object):
         group.add(nb_start_el)
         group.add(nb_sub_el)
 
-        for row in summary:
-            current_name = Report._name_from_translations(row['type'], translations)
-            if row['type'] == 'nb_games_played':
+        for summary_key, summary_value in summary.items():
+            current_name = Report._name_from_translations(summary_key, translations)
+            if summary_key == 'nb_games_played':
                 nb_games_fig_x = Report._number_to_px(nb_games_x + .5 * nb_games_width)
                 nb_games_fig_y = Report._number_to_px(nb_games_y + .5 * nb_games_height)
                 nb_games_style = '''
@@ -253,7 +253,7 @@ class Report(object):
                 font-size: {};
                 font-family: {};
                 '''.format(primary_color, Report._number_to_px(.75 * nb_games_height), figure_font)
-                nb_games_fig_el = svgwrite.text.Text(row['value'], x=[nb_games_fig_x], y=[nb_games_fig_y],
+                nb_games_fig_el = svgwrite.text.Text(summary_value, x=[nb_games_fig_x], y=[nb_games_fig_y],
                                                      text_anchor='middle', dominant_baseline='central',
                                                      style=nb_games_style.replace(' ', '').replace('\n', ''))
                 group.add(nb_games_fig_el)
@@ -270,7 +270,7 @@ class Report(object):
                                                            dominant_baseline='central',
                                                            style=nb_games_text.replace(' ', '').replace('\n', ''))
                 group.add(nb_games_name_text_el)
-            elif row['type'] == 'nb_games_started':
+            elif summary_key == 'nb_games_started':
                 nb_games_fig_x = Report._number_to_px(nb_start_x + .5 * nb_start_width)
                 nb_games_fig_y = Report._number_to_px(nb_start_y + .5 * nb_start_height)
                 nb_games_style = '''
@@ -278,7 +278,7 @@ class Report(object):
                 font-size: {};
                 font-family: {};
                 '''.format(primary_color, Report._number_to_px(.5 * nb_start_height), text_font)
-                nb_games_fig_el = svgwrite.text.Text('{} {}'.format(str(row['value']), current_name.lower()),
+                nb_games_fig_el = svgwrite.text.Text('{} {}'.format(str(summary_value), current_name.lower()),
                                                      x=[nb_games_fig_x], y=[nb_games_fig_y], text_anchor='middle',
                                                      dominant_baseline='central',
                                                      style=nb_games_style.replace(' ', '').replace('\n', ''))
@@ -291,7 +291,7 @@ class Report(object):
                 font-size: {};
                 font-family: {};
                 '''.format(primary_color, Report._number_to_px(.5 * nb_sub_height), text_font)
-                nb_games_fig_el = svgwrite.text.Text('{} {}'.format(str(row['value']), current_name.lower()),
+                nb_games_fig_el = svgwrite.text.Text('{} {}'.format(str(summary_value), current_name.lower()),
                                                      x=[nb_games_fig_x], y=[nb_games_fig_y], text_anchor='middle',
                                                      dominant_baseline='central',
                                                      style=nb_games_style.replace(' ', '').replace('\n', ''))

@@ -84,13 +84,13 @@ class PlayerNewsReport(Report):
 
         dwg.add(entity_group)
 
-        for event in self.events:
-            event_name = self._name_from_translations(event['type'], self.translations)
-            event_el, event_size = self._make_event_label(event['type'], event_name, event['value'], .9*.2*height,
+        for event_type, event_value in self.events.items():
+            event_name = self._name_from_translations(event_type, self.translations)
+            event_el, event_size = self._make_event_label(event_type, event_name, event_value, .9*.2*height,
                                                           .2*height, figure_font, main_font, primary_color,
                                                           secondary_color)
 
-            if event['type'] == 'nb_goals':
+            if event_type == 'nb_goals':
                 event_dx = int(math.floor((.66 + 1./12.)*width - .5*event_size[0]))
                 event_dy = int(math.floor(.35*height))
             else:

@@ -33,30 +33,15 @@ def test_player_news_report():
                 'nickname': None
             }
         },
-        'summary': [
-            {
-                'type': 'nb_games_played',
-                'value': 25
-            },
-            {
-                'type': 'nb_games_started',
-                'value': 23
-            },
-            {
-                'type': 'nb_games_not_started',
-                'value': 2
-            }
-        ],
-        'events': [
-            {
-                'type': 'nb_goals',
-                'value': 7
-            },
-            {
-                'type': 'nb_assists',
-                'value': 10
-            }
-        ],
+        'summary': {
+            'nb_games_played': 25,
+            'nb_games_started': 23,
+            'nb_games_not_started': 2
+        },
+        'events': {
+            'nb_goals': 7,
+            'nb_assists': 10
+        },
         'stats': [
             {
                 'denominator': None,

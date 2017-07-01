@@ -48,6 +48,17 @@ class TypeValueSchema(Schema):
     value = fields.Int(required=True)
 
 
+class PlayerSummarySchema(Schema):
+    nb_games_played = fields.Int(required=True)
+    nb_games_started = fields.Int(required=True)
+    nb_games_not_started = fields.Int(required=True)
+
+
+class PlayerEventsSchema(Schema):
+    nb_goals = fields.Int(required=True)
+    nb_assists = fields.Int(required=True)
+
+
 class TranslationSchema(Schema):
     identifier = fields.Str(required=True)
     translation = fields.Str(required=True)
@@ -76,8 +87,8 @@ class PlayerNewsReportSchema(Schema):
     competition_picture = fields.Str(allow_none=True)
     season_entity = fields.Nested(SeasonSchema, required=True)
     player_entity = fields.Nested(PlayerSchema, required=True)
-    summary = fields.List(fields.Nested(TypeValueSchema))
-    events = fields.List(fields.Nested(TypeValueSchema))
+    summary = fields.Nested(PlayerSummarySchema, required=True)
+    events = fields.Nested(PlayerEventsSchema, required=True)
     translations = fields.List(fields.Nested(TranslationSchema))
     stats = fields.List(fields.Nested(PlayerStatsSchema), required=True)
 

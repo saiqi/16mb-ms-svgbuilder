@@ -66,7 +66,7 @@ class TranslationSchema(Schema):
 
 
 class PlayerStatsSchema(Schema):
-    id = fields.Str(required=True)
+    formula_id = fields.Str(required=True)
     from_date = fields.Str()
     to_date = fields.Str()
     interval = fields.Float(required=True)

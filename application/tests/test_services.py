@@ -45,7 +45,7 @@ def test_player_news_report():
         'stats': [
             {
                 'denominator': None,
-                'id': 'passes_left',
+                'formula_id': 'passes_left',
                 'from_date': '2015-08-30',
                 'interval': 2552.0,
                 'is_negative': False,
@@ -58,7 +58,7 @@ def test_player_news_report():
             },
             {
                 'denominator': None,
-                'id': 'total_cross',
+                'formula_id': 'total_cross',
                 'from_date': '2015-08-30',
                 'interval': 2552.0,
                 'is_negative': False,
@@ -71,7 +71,7 @@ def test_player_news_report():
             },
             {
                 'denominator': None,
-                'id': 'total_scoring_att',
+                'formula_id': 'total_scoring_att',
                 'from_date': '2015-08-30',
                 'interval': 2552.0,
                 'is_negative': False,
@@ -84,7 +84,7 @@ def test_player_news_report():
             },
             # {
             #     'denominator': None,
-            #     'id': 'total_contest',
+            #     'formula_id': 'total_contest',
             #     'from_date': '2015-08-30',
             #     'interval': 2552.0,
             #     'is_negative': False,
@@ -97,7 +97,7 @@ def test_player_news_report():
             # },
             # {
             #     'denominator': None,
-            #     'id': 'interception',
+            #     'formula_id': 'interception',
             #     'from_date': '2015-08-30',
             #     'interval': 2552.0,
             #     'is_negative': False,
@@ -110,7 +110,7 @@ def test_player_news_report():
             # },
             # {
             #     'denominator': None,
-            #     'id': 'red_card',
+            #     'formula_id': 'red_card',
             #     'from_date': '2015-08-30',
             #     'interval': 2552.0,
             #     'is_negative': False,

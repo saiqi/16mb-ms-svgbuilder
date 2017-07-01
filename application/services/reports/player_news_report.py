@@ -104,8 +104,8 @@ class PlayerNewsReport(Report):
         stat_vshift = .66
         stat_height = .1*height if (1.-stat_vshift)*height / nb_stats > .1*height else (1.-stat_vshift)*height / nb_stats
         for i, stat in enumerate(self.stats):
-            stat_name = self._name_from_translations(stat['id'], self.translations)
-            stat_el, stat_size = self._make_stat_label(stat['id'], stat_name.upper(),
+            stat_name = self._name_from_translations(stat['formula_id'], self.translations)
+            stat_el, stat_size = self._make_stat_label(stat['formula_id'], stat_name.upper(),
                                                        math.floor(stat['value']), stat['rank'],
                                                        .33*width, stat_height, figure_font,
                                                        main_font, primary_color, secondary_color)

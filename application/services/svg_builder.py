@@ -26,7 +26,7 @@ class SvgBuilderService(object):
             if len(spans) != 1:
                 raise SvgBuilderError('Too many or no tspan tags related to text node')
 
-            spans[0].text = values[0].value
+            spans[0].text = str(values[0].value)
 
     @staticmethod
     def _handle_rect(nodes, results):

@@ -65,4 +65,4 @@ class SvgBuilderService(object):
         rect_nodes = root.xpath('//n:rect[@currentValue]', namespaces={'n': 'http://www.w3.org/2000/svg'})
         self._handle_rect(rect_nodes, results)
 
-        return etree.tostring(root)
+        return etree.tostring(root).decode('utf-8')

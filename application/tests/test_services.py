@@ -6,57 +6,22 @@ from application.services.svg_builder import SvgBuilderService
 
 TEMPLATE = '''
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   version="1.1"
-   id="Calque_1"
-   x="0px"
-   y="0px"
-   width="255.118px"
-   height="308.976px"
-   viewBox="0 0 255.118 308.976"
-   enable-background="new 0 0 255.118 308.976"
-   xml:space="preserve"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="template_SO.svg">
-
-    <text
-         xml:space="preserve"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#318ccb;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         x="20.292917"
-         y="194.41924"
-         id="text7137"
-         sodipodi:linespacing="125%"
-         content="$.referential.man_of_game.common_name">
-             <tspan
-               sodipodi:role="line"
-               id="tspan7139"
-               x="20.292917"
-               y="194.41924">Homme du match</tspan>
-    </text>
-    <rect
-     style="fill:#c5ddec"
-     x="87.707817"
-     y="200.10043"
-     width="106.117"
-     height="6.8889999"
-     id="rect5081" />
-     <rect
-     style="fill:#00508c"
-     x="87.707817"
-     y="200.10043"
-     width="3.6570001"
-     height="6.8889999"
-     id="rect5083"
-     currentValue="$.query.soccer_match_advanced_player_stats[0].value"
-     refValue="$.query.soccer_match_advanced_player_stats[0].max_value" />
+<svg enable-background="new 0 0 255.118 308.976" height="308.976px" id="Calque_1" inkscape:version="0.91 r13725" sodipodi:docname="template_SO.svg" version="1.1" viewBox="0 0 255.118 308.976" width="255.118px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px">
+  <text id="text5638" sodipodi:linespacing="125%" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#ffffff;fill-opacity:0.94117647;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;" x="12.437594" xml:space="preserve" y="178.70859">
+    <tspan id="tspan5640" sodipodi:role="line" style="fill-opacity:0.94117647;fill:#ffffff;stroke:none;stroke-opacity:1;" x="12.437594" y="178.70859">Un girondin dans le match</tspan>
+  </text>
+  <text content="$.referential.man_of_game.common_name" id="text7137" sodipodi:linespacing="125%" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12.5px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#318ccb;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;" x="20.292917" xml:space="preserve" y="194.41924">
+    <tspan id="tspan7139" sodipodi:role="line" x="20.292917" y="194.41924">Homme du match</tspan>
+  </text>
+  <rect height="6.8889999" id="rect5081" style="fill:#c5ddec" width="106.117" x="87.707817" y="200.10043"/>
+  <rect currentValue="$.query.soccer_match_advanced_player_stats[0].value" height="6.8889999" id="rect5083" refValue="$.query.soccer_match_advanced_player_stats[0].max_value" style="fill:#00508c" width="106.117" x="87.707817" y="200.10043"/>
+  <text content="$.query.soccer_match_advanced_player_stats[0].type" id="text6086" sodipodi:linespacing="125%" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.5px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" x="41.895054" xml:space="preserve" y="205.22029">
+    <tspan id="tspan6088" sodipodi:role="line" x="41.895054" y="205.22029">placeholder</tspan>
+  </text>
+  <text content="$.query.soccer_match_advanced_player_stats[0].value" percentage="$.query.soccer_match_advanced_player_stats[0].is_success_rate" id="text6090" sodipodi:linespacing="125%" style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" x="195.07384" xml:space="preserve" y="205.22029">
+    <tspan id="tspan6092" sodipodi:role="line" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.5px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start" x="195.07384" y="205.22029">placeholder</tspan>
+  </text>
+  <image content="$.referential.man_of_game.picture" xlink:href="foo"/>
 </svg>
 '''
 
@@ -65,8 +30,9 @@ def test_replace_jsonpath():
     results = {
         'query': {
             'soccer_match_advanced_player_stats': [
-                {'max_value': 2.0, 'rank_match': 1, 'type': 'Tirs de la tête', 'value': 1.0},
-                {'max_value': 4.0, 'rank_match': 1, 'type': 'Tirs non cadrés', 'value': 4.0}
+                {'max_value': 4.0, 'rank_match': 5, 'type': '% Tirs', 'value': 0.85923323, 'is_success_rate': True},
+                {'max_value': 2.0, 'rank_match': 1, 'type': 'Tirs de la tête', 'value': 1.0, 'is_success_rate': False},
+                {'max_value': 4.0, 'rank_match': 1, 'type': 'Tirs non cadrés', 'value': 4.0, 'is_success_rate': False},
             ],
             'soccer_match_team_infos': [
                 {'score': 1, 'side': 'Home', 'team_id': 'Amiens'},
@@ -93,7 +59,8 @@ def test_replace_jsonpath():
                     'type': 'player'
                 },
                 'provider': 'opta_f9',
-                'type': 'soccer player'
+                'type': 'soccer player',
+                'picture': 'bar'
             },
             'match': {
                 'common_name': 'Amiens - Bordeaux',

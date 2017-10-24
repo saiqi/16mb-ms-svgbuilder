@@ -26,7 +26,31 @@ class SvgBuilderService(object):
             if len(spans) != 1:
                 raise SvgBuilderError('Too many or no tspan tags related to text node')
 
-            spans[0].text = str(values[0].value)
+            if 'percentage' in n.attrib:
+                percentage_path = parser.parse(n.get('percentage'))
+                is_percentage = percentage_path.find(results)
+
+                if len(is_percentage) != 1:
+                    raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('percentage')))
+
+                if is_percentage[0].value is True:
+                    spans[0].text = str(round(100*values[0].value)) + ' %'
+                else:
+                    spans[0].text = str(round(values[0].value))
+            else:
+                spans[0].text = str(values[0].value)
+
+    @staticmethod
+    def _handle_images(nodes, results):
+        for n in nodes:
+            path = parser.parse(n.get('content'))
+
+            values = path.find(results)
+
+            if len(values) != 1:
+                raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('content')))
+
+            n.attrib['{http://www.w3.org/1999/xlink}href'] = 'data:image/png;base64,' + values[0].value
 
     @staticmethod
     def _handle_rect(nodes, results):
@@ -64,5 +88,8 @@ class SvgBuilderService(object):
 
         rect_nodes = root.xpath('//n:rect[@currentValue]', namespaces={'n': 'http://www.w3.org/2000/svg'})
         self._handle_rect(rect_nodes, results)
+
+        images_nodes = root.xpath('//n:image[@content]', namespaces={'n': 'http://www.w3.org/2000/svg'})
+        self._handle_images(images_nodes, results)
 
         return etree.tostring(root).decode('utf-8')

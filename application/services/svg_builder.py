@@ -23,8 +23,10 @@ class SvgBuilderService(object):
 
             spans = n.xpath('./n:tspan', namespaces={'n': 'http://www.w3.org/2000/svg'})
 
-            if len(spans) != 1:
-                raise SvgBuilderError('Too many or no tspan tags related to text node')
+            if len(spans) > 1:
+                raise SvgBuilderError('Too many tspan tags related to text node')
+
+            has_tpan = len(spans) > 0
 
             if 'percentage' in n.attrib:
                 percentage_path = parser.parse(n.get('percentage'))
@@ -34,11 +36,16 @@ class SvgBuilderService(object):
                     raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('percentage')))
 
                 if is_percentage[0].value is True:
-                    spans[0].text = str(round(100*values[0].value)) + ' %'
+                    text = str(round(100*values[0].value)) + ' %'
                 else:
-                    spans[0].text = str(round(values[0].value))
+                    text = str(round(values[0].value))
             else:
-                spans[0].text = str(values[0].value)
+                text = str(values[0].value)
+
+            if has_tpan is True:
+                spans[0].text = text
+            else:
+                n.text = text
 
     @staticmethod
     def _handle_images(nodes, results):

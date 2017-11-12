@@ -91,7 +91,7 @@ class SvgBuilderService(object):
                 origin = n.get('origin')
                 if origin == 'end':
                     if n.get('x'):
-                        ref_x = float(n.get(n.get('x')))
+                        ref_x = float(n.get('x'))
                         n.attrib['x'] = ref_x + (ref_width - width)
 
     @rpc

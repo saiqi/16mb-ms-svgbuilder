@@ -90,8 +90,9 @@ class SvgBuilderService(object):
             if n.get('origin'):
                 origin = n.get('origin')
                 if origin == 'end':
-                    ref_x = float(n.get(n.get('x')))
-                    n.attrib['x'] = ref_x + (ref_width - width)
+                    if n.get('x'):
+                        ref_x = float(n.get(n.get('x')))
+                        n.attrib['x'] = ref_x + (ref_width - width)
 
     @rpc
     def replace_jsonpath(self, svg_string, results):

@@ -36,7 +36,7 @@ class SvgBuilderService(object):
                     raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('percentage')))
 
                 if is_percentage[0].value is True:
-                    text = str(round(100*values[0].value)) + ' %'
+                    text = str(round(100*values[0].value)) + '%'
                 else:
                     text = str(round(values[0].value))
             else:

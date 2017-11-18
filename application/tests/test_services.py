@@ -22,6 +22,13 @@ TEMPLATE = '''
     <tspan id="tspan6092" sodipodi:role="line" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.5px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start" x="195.07384" y="205.22029">placeholder</tspan>
   </text>
   <image content="$.referential.man_of_game.picture" xlink:href="foo"/>
+  <path
+       id="path4865"
+       refValue="$.query.soccer_match_advanced_player_stats[0].max_value"
+       currentValue="$.query.soccer_match_advanced_player_stats[0].value"
+       d="m 100,50 a 50,50 0 1 0 40.450849718747364,79.38926261462365"
+       style="fill:none;stroke:#875274;stroke-width:10"
+       inkscape:connector-curvature="0" />
 </svg>
 '''
 

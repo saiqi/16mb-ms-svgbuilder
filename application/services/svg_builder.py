@@ -119,7 +119,7 @@ class SvgBuilderService(object):
             value = values[0].value
             ref_value = ref_values[0].value
 
-            ratio = 1
+            ratio = 1 - 1.e-3
             if ref_value != 0:
                 ratio = value/ref_value
 

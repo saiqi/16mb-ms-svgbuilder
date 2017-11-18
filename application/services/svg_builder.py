@@ -139,8 +139,8 @@ class SvgBuilderService(object):
             center_x = start_x
             center_y = start_y + radius_y
 
-            x = center_x + radius_x*math.cos(angle)
-            y = center_y + radius_y*math.sin(angle)
+            x = center_x + radius_x*math.cos(angle - math.pi/2)
+            y = center_y + radius_y*math.sin(angle - math.pi/2)
 
             dx = start_x - x
             dy = y - start_y
@@ -156,7 +156,6 @@ class SvgBuilderService(object):
             computed_d.append('{},{}'.format(dx, dy))
 
             n.attrib['d'] = ' '.join(computed_d)
-
 
     @rpc
     def replace_jsonpath(self, svg_string, results):

@@ -119,7 +119,7 @@ class SvgBuilderService(object):
             value = values[0].value
             ref_value = ref_values[0].value
 
-            ratio = 1 - 1.e-3
+            ratio = 1
             if ref_value != 0:
                 ratio = value/ref_value
 
@@ -145,17 +145,24 @@ class SvgBuilderService(object):
             dx = start_x - x
             dy = y - start_y
 
-            computed_d = list()
-            computed_d.append('m')
-            computed_d.append('{},{}'.format(start_x, start_y))
-            computed_d.append('a')
-            computed_d.append('{},{}'.format(radius_x, radius_y))
-            computed_d.append('0')
-            computed_d.append('1' if is_large_arc else '0')
-            computed_d.append('0')
-            computed_d.append('{},{}'.format(dx, dy))
+            if ratio == 1:
+                n.tag = etree.QName('http://www.w3.org/2000/svg', 'circle')
+                del n.attrib['d']
+                n.attrib['cx'] = str(center_x)
+                n.attrib['cy'] = str(center_y)
+                n.attrib['r'] = str(radius_x)
+            else:
+                computed_d = list()
+                computed_d.append('m')
+                computed_d.append('{},{}'.format(start_x, start_y))
+                computed_d.append('a')
+                computed_d.append('{},{}'.format(radius_x, radius_y))
+                computed_d.append('0')
+                computed_d.append('1' if is_large_arc else '0')
+                computed_d.append('0')
+                computed_d.append('{},{}'.format(dx, dy))
 
-            n.attrib['d'] = ' '.join(computed_d)
+                n.attrib['d'] = ' '.join(computed_d)
 
     @rpc
     def replace_jsonpath(self, svg_string, results):

@@ -29,6 +29,13 @@ TEMPLATE = '''
        d="m 100,50 a 50,50 0 1 0 40.450849718747364,79.38926261462365"
        style="fill:none;stroke:#875274;stroke-width:10"
        inkscape:connector-curvature="0" />
+  <path
+       id="path4865"
+       refValue="$.query.soccer_match_advanced_player_stats[2].max_value"
+       currentValue="$.query.soccer_match_advanced_player_stats[2].value"
+       d="m 100,50 a 50,50 0 1 0 40.450849718747364,79.38926261462365"
+       style="fill:none;stroke:#875274;stroke-width:10"
+       inkscape:connector-curvature="0" />
 </svg>
 '''
 
@@ -87,5 +94,3 @@ def test_replace_jsonpath():
     }
     service = worker_factory(SvgBuilderService)
     converted = service.replace_jsonpath(TEMPLATE, results)
-
-    print(converted)

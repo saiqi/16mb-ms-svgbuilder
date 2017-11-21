@@ -1,5 +1,6 @@
 import datetime
 
+from lxml import etree
 from nameko.testing.services import worker_factory
 
 from application.services.svg_builder import SvgBuilderService
@@ -24,13 +25,14 @@ TEMPLATE = '''
   <image content="$.referential.man_of_game.picture" xlink:href="foo"/>
   <path
        id="path4865"
+       class="ellipse"
        refValue="$.query.soccer_match_advanced_player_stats[0].max_value"
        currentValue="$.query.soccer_match_advanced_player_stats[0].value"
        d="m 100,50 a 50,50 0 1 0 40.450849718747364,79.38926261462365"
        style="fill:none;stroke:#875274;stroke-width:10"
        inkscape:connector-curvature="0" />
   <path
-       id="path4865"
+       id="path4866"
        refValue="$.query.soccer_match_advanced_player_stats[2].max_value"
        currentValue="$.query.soccer_match_advanced_player_stats[2].value"
        d="m 100,50 a 50,50 0 1 0 40.450849718747364,79.38926261462365"
@@ -94,3 +96,8 @@ def test_replace_jsonpath():
     }
     service = worker_factory(SvgBuilderService)
     converted = service.replace_jsonpath(TEMPLATE, results)
+    root = etree.fromstring(converted)
+
+    ellipse = root.xpath('//n:path[@id = \'path4865\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
+    assert len(ellipse) == 1
+    assert ellipse[0].attrib['d'] != 'm 100,50 a 50,50 0 1 0 40.450849718747364,79.38926261462365'

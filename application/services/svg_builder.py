@@ -177,7 +177,7 @@ class SvgBuilderService(object):
         images_nodes = root.xpath('//n:image[@content]', namespaces={'n': 'http://www.w3.org/2000/svg'})
         self._handle_images(images_nodes, results)
 
-        ellipse_nodes = root.xpath('//n:path[@currentValue]', namespaces={'n': 'http://www.w3.org/2000/svg'})
+        ellipse_nodes = root.xpath('//n:path[@currentValue and @class=\'ellipse\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
         self._handle_ellipse(ellipse_nodes, results)
 
         return etree.tostring(root).decode('utf-8')

@@ -1,5 +1,6 @@
 import math
 import re
+import json
 
 from nameko.rpc import rpc
 from lxml import etree
@@ -164,6 +165,42 @@ class SvgBuilderService(object):
 
                 n.attrib['d'] = ' '.join(computed_d)
 
+    @staticmethod
+    def _handle_colors(nodes, results):
+        for n in nodes:
+            value_path = parser.parse(n.get('colorValue'))
+            color_mapping = dict()
+            for c in n.get('colorMapping').split(';'):
+                k, v = c.split(':')
+                color_mapping[k.strip()] = v.strip()
+
+            values = value_path.find(results)
+
+            if len(values) != 1:
+                raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('colorValue')))
+
+            value = values[0].value
+
+            try:
+                color = color_mapping[value]
+            except KeyError:
+                try:
+                    color = color_mapping[str(value)]
+                except KeyError:
+                    color = color_mapping['default']
+
+            if 'style' in n.attrib:
+                styles = n.get('style').split(';')
+                for s in styles:
+                    prop = s.split(':')
+
+                    if prop[0] == 'fill':
+                        old_color = prop[1]
+
+                    n.attrib['style'] = n.attrib['style'].replace(old_color, color)
+            else:
+                n.attrib['style'] = 'fill:{};'.format(color)
+
     @rpc
     def replace_jsonpath(self, svg_string, results):
         root = etree.fromstring(svg_string.replace('\n', '').encode('utf-8'))
@@ -179,5 +216,8 @@ class SvgBuilderService(object):
 
         ellipse_nodes = root.xpath('//n:path[@currentValue and @class=\'ellipse\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
         self._handle_ellipse(ellipse_nodes, results)
+
+        color_nodes = root.xpath('//*[@colorValue]')
+        self._handle_colors(color_nodes, results)
 
         return etree.tostring(root).decode('utf-8')

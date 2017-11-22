@@ -35,6 +35,8 @@ TEMPLATE = '''
        id="path4866"
        refValue="$.query.soccer_match_advanced_player_stats[2].max_value"
        currentValue="$.query.soccer_match_advanced_player_stats[2].value"
+       colorValue="$.query.soccer_match_advanced_player_stats[2].rank_match"
+       colorMapping="default: #FFFFFF; 1: #3BA7B0; 2: #2DBA66; 3: #9F3535"
        d="m 100,50 a 50,50 0 1 0 40.450849718747364,79.38926261462365"
        style="fill:none;stroke:#875274;stroke-width:10"
        inkscape:connector-curvature="0" />
@@ -101,3 +103,7 @@ def test_replace_jsonpath():
     ellipse = root.xpath('//n:path[@id = \'path4865\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
     assert len(ellipse) == 1
     assert ellipse[0].attrib['d'] != 'm 100,50 a 50,50 0 1 0 40.450849718747364,79.38926261462365'
+
+    ellipse = root.xpath('//n:path[@id = \'path4866\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
+    assert len(ellipse) == 1
+    assert '#3BA7B0' in ellipse[0].attrib['style']

@@ -196,8 +196,7 @@ class SvgBuilderService(object):
 
                     if prop[0] == 'fill':
                         old_color = prop[1]
-
-                    n.attrib['style'] = n.attrib['style'].replace(old_color, color)
+                        n.attrib['style'] = n.attrib['style'].replace(old_color, color)
             else:
                 n.attrib['style'] = 'fill:{};'.format(color)
 

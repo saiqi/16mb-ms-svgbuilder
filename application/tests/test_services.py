@@ -40,6 +40,16 @@ TEMPLATE = '''
        d="m 100,50 a 50,50 0 1 0 40.450849718747364,79.38926261462365"
        style="fill:none;stroke:#875274;stroke-width:10"
        inkscape:connector-curvature="0" />
+  <path
+     id="path4867"
+     refValue="$.query.soccer_match_advanced_player_stats[0].max_value"
+     currentValue="$.query.soccer_match_advanced_player_stats[0].value"
+     colorValue="$.query.soccer_match_advanced_player_stats[0].rank_match"
+     colorMapping="default: #FFFFFF; 1: #3BA7B0; 2: #2DBA66; 3: #9F3535"
+     disappearDefault="true"
+     d="m 100,50 a 50,50 0 1 0 40.450849718747364,79.38926261462365"
+     style="fill:none;stroke:#875274;stroke-width:10"
+     inkscape:connector-curvature="0" />
 </svg>
 '''
 
@@ -107,3 +117,7 @@ def test_replace_jsonpath():
     ellipse = root.xpath('//n:path[@id = \'path4866\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
     assert len(ellipse) == 1
     assert '#3BA7B0' in ellipse[0].attrib['style']
+
+    ellipse = root.xpath('//n:path[@id = \'path4867\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
+    assert len(ellipse) == 1
+    assert 'display: none' in ellipse[0].attrib['style']

@@ -181,12 +181,15 @@ class SvgBuilderService(object):
 
             value = values[0].value
 
+            is_default = False
+
             try:
                 color = color_mapping[value]
             except KeyError:
                 try:
                     color = color_mapping[str(value)]
                 except KeyError:
+                    is_default = True
                     color = color_mapping['default']
 
             if 'style' in n.attrib:
@@ -199,6 +202,9 @@ class SvgBuilderService(object):
                         n.attrib['style'] = n.attrib['style'].replace(old_color, color)
             else:
                 n.attrib['style'] = 'fill:{};'.format(color)
+
+            if is_default is True and 'disappearDefault' in n.attrib and n.attrib['disappearDefault'] == 'true':
+                n.attrib['style'] = '{};{}'.format(n.attrib['style'], 'display: none')
 
     @rpc
     def replace_jsonpath(self, svg_string, results):

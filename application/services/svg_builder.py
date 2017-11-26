@@ -133,7 +133,7 @@ class SvgBuilderService(object):
                 angle = 2*math.pi*ratio
             else:
                 angle = -2*math.pi*ratio
-            is_large_arc = angle > math.pi
+            is_large_arc = abs(angle) > math.pi
 
             d = n.get('d')
             try:

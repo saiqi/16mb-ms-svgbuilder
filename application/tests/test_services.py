@@ -32,6 +32,14 @@ TEMPLATE = '''
        style="fill:none;stroke:#875274;stroke-width:10"
        inkscape:connector-curvature="0" />
   <path
+       id="path4286"
+       refValue="$.query.soccer_match_teamstat[1].total"
+       currentValue="$.query.soccer_match_teamstat[1].away_value"
+       origin="end"
+       class="ellipse"
+       d="m 375.0,-62.5 a 62.5,62.5 0 0 1 0.0,125.0"
+       style="stroke:#000BFF;stroke-width:20.625;fill:none" />
+  <path
        id="path4866"
        refValue="$.query.soccer_match_advanced_player_stats[2].max_value"
        currentValue="$.query.soccer_match_advanced_player_stats[2].value"
@@ -67,12 +75,12 @@ def test_replace_jsonpath():
                 {'score': 0, 'side': 'Away', 'team_id': 'Bordeaux'}
             ],
             'soccer_match_teamstat': [
-                {'away_value': 436.0, 'home_value': 275.0, 'type': 'Passes réussies'},
-                {'away_value': 4.0, 'home_value': 4.0, 'type': 'Tirs cadrés'},
-                {'away_value': 14.0, 'home_value': 13.0, 'type': 'Tirs'},
-                {'away_value': 48.0, 'home_value': 56.0, 'type': 'Duels perdus'},
-                {'away_value': 0.59, 'home_value': 0.41, 'type': 'Possession'},
-                {'away_value': 3.0, 'home_value': 4.0, 'type': 'Corners joués'}
+                {'total': 436 + 275, 'away_value': 436.0, 'home_value': 275.0, 'type': 'Passes réussies'},
+                {'total': 8, 'away_value': 4.0, 'home_value': 4.0, 'type': 'Tirs cadrés'},
+                {'total': 27, 'away_value': 14.0, 'home_value': 13.0, 'type': 'Tirs'},
+                {'total': 48 + 56, 'away_value': 48.0, 'home_value': 56.0, 'type': 'Duels perdus'},
+                {'total': 1., 'away_value': 0.59, 'home_value': 0.41, 'type': 'Possession'},
+                {'total': 7, 'away_value': 3.0, 'home_value': 4.0, 'type': 'Corners joués'}
             ]
         },
         'referential': {

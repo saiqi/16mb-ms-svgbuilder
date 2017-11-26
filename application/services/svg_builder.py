@@ -117,6 +117,11 @@ class SvgBuilderService(object):
             if len(ref_values) != 1:
                 raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('refValue')))
 
+            is_inverted = False
+            if 'origin' in n.attrib:
+                if n.get('origin') == 'end':
+                    is_inverted = True
+
             value = values[0].value
             ref_value = ref_values[0].value
 
@@ -124,7 +129,10 @@ class SvgBuilderService(object):
             if ref_value != 0:
                 ratio = value/ref_value
 
-            angle = 2*math.pi*ratio
+            if is_inverted is False:
+                angle = 2*math.pi*ratio
+            else:
+                angle = -2*math.pi*ratio
             is_large_arc = angle > math.pi
 
             d = n.get('d')
@@ -160,7 +168,7 @@ class SvgBuilderService(object):
                 computed_d.append('{},{}'.format(radius_x, radius_y))
                 computed_d.append('0')
                 computed_d.append('1' if is_large_arc else '0')
-                computed_d.append('0')
+                computed_d.append('1' if is_inverted else '0')
                 computed_d.append('{},{}'.format(dx, dy))
 
                 n.attrib['d'] = ' '.join(computed_d)

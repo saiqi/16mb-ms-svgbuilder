@@ -58,10 +58,18 @@ class SvgBuilderService(object):
 
             values = path.find(results)
 
+            if 'isVectorial' not in n.attrib:
+                raise SvgBuilderError('Picture node without any isVectorial attribute')
+
+            is_svg = n.get('isVectorial') == 'true'
+
             if len(values) != 1:
                 raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('content')))
 
-            n.attrib['{http://www.w3.org/1999/xlink}href'] = 'data:image/png;base64,' + values[0].value
+            if is_svg is True:
+                n.attrib['{http://www.w3.org/1999/xlink}href'] = 'data:image/svg+xml;utf8,' + values[0].value
+            else:
+                n.attrib['{http://www.w3.org/1999/xlink}href'] = 'data:image/png;base64,' + values[0].value
 
     @staticmethod
     def _handle_rect(nodes, results):

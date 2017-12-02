@@ -1,6 +1,7 @@
 import math
 import re
 import json
+import html
 
 from nameko.rpc import rpc
 from lxml import etree
@@ -67,7 +68,7 @@ class SvgBuilderService(object):
                 raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('content')))
 
             if is_svg is True:
-                n.attrib['{http://www.w3.org/1999/xlink}href'] = 'data:image/svg+xml;utf8,' + values[0].value
+                n.attrib['{http://www.w3.org/1999/xlink}href'] = 'data:image/svg+xml;utf8,' + html.escape(values[0].value)
             else:
                 n.attrib['{http://www.w3.org/1999/xlink}href'] = 'data:image/png;base64,' + values[0].value
 

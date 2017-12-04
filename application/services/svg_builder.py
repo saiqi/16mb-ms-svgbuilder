@@ -28,10 +28,10 @@ class SvgBuilderService(object):
             x = node.attrib['x']
             y = node.attrib['y']
 
-            for i, t in enumerate(break_text.split('\n')):
+            for t in break_text.split('\n'):
                 tspan_node = etree.Element('tspan', nsmap = {'svg': 'http://www.w3.org/2000/svg'})
                 tspan_node.attrib['x'] = x
-                tspan_node.attrib['dy'] = str(i) + "em"
+                tspan_node.attrib['dy'] = "1em"
                 tspan_node.text = t
 
                 node.append(tspan_node)

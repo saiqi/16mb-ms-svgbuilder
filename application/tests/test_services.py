@@ -17,7 +17,7 @@ TEMPLATE = '''
   <rect origin="end" height="6.8889999" id="rect5081" style="fill:#c5ddec" width="106.117" x="87.707817" y="200.10043"/>
   <rect currentValue="$.query.soccer_match_advanced_player_stats[0].value" height="6.8889999" id="rect5083" refValue="$.query.soccer_match_advanced_player_stats[0].max_value" style="fill:#00508c" width="106.117" x="87.707817" y="200.10043"/>
   <text content="$.query.soccer_match_advanced_player_stats[0].type" id="text6086" sodipodi:linespacing="125%" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.5px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" x="41.895054" xml:space="preserve" y="205.22029">
-    <tspan id="tspan6088" sodipodi:role="line" x="41.895054" y="205.22029">placeholder</tspan>
+    placeholder
   </text>
   <text content="$.query.soccer_match_advanced_player_stats[0].value" percentage="$.query.soccer_match_advanced_player_stats[0].is_success_rate" id="text6090" sodipodi:linespacing="125%" style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" x="195.07384" xml:space="preserve" y="205.22029">
     <tspan id="tspan6092" sodipodi:role="line" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.5px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start" x="195.07384" y="205.22029">placeholder</tspan>
@@ -64,10 +64,11 @@ TEMPLATE = '''
 
 
 def test_replace_jsonpath():
+    long_label = 'very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very very long label'
     results = {
         'query': {
             'soccer_match_advanced_player_stats': [
-                {'max_value': 4.0, 'rank_match': 5, 'type': '% Tirs', 'value': 0.85923323, 'is_success_rate': True},
+                {'max_value': 4.0, 'rank_match': 5, 'type': long_label, 'value': 0.85923323, 'is_success_rate': True},
                 {'max_value': 2.0, 'rank_match': 1, 'type': 'Tirs de la tête', 'value': 1.0, 'is_success_rate': False},
                 {'max_value': 4.0, 'rank_match': 1, 'type': 'Tirs non cadrés', 'value': 4.0, 'is_success_rate': False},
             ],

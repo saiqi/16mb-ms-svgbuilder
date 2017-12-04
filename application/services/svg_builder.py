@@ -2,6 +2,7 @@ import math
 import re
 import json
 import html
+import textwrap
 
 from nameko.rpc import rpc
 from lxml import etree
@@ -15,6 +16,25 @@ class SvgBuilderError(Exception):
 class SvgBuilderService(object):
 
     name = 'svg_builder'
+
+    @staticmethod
+    def _handle_text_length(node, text):
+        if len(text) < 35:
+            node.text = text
+        else:
+            node.text = None
+            break_text = textwrap.fill(text, width=35)
+
+            x = node.attrib['x']
+            y = node.attrib['y']
+
+            for i, t in enumerate(break_text.split('\n')):
+                tspan_node = etree.Element('tspan', nsmap = {'svg': 'http://www.w3.org/2000/svg'})
+                tspan_node.attrib['x'] = x
+                tspan_node.attrib['dy'] = str(i) + "em"
+                tspan_node.text = t
+
+                node.append(tspan_node)
 
     @staticmethod
     def _handle_text_tag(nodes, results):
@@ -50,7 +70,7 @@ class SvgBuilderService(object):
             if has_tpan is True:
                 spans[0].text = text
             else:
-                n.text = text
+                SvgBuilderService._handle_text_length(n, text)
 
     @staticmethod
     def _handle_images(nodes, results):

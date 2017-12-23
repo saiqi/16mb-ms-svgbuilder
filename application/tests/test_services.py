@@ -63,7 +63,7 @@ TEMPLATE = '''
      id="g1021"
      yPosition="$.query.soccer_match_player_lineup[{{k0}}].y"
      xPosition="$.query.soccer_match_player_lineup[{{k0}}].x"
-     nRepeat="11"
+     nRepeat="2"
      class="repeat">
     <g
        id="g1019"
@@ -170,7 +170,7 @@ def test_replace_jsonpath():
                 'provider': 'opta_f9',
                 'type': 'game'
             },
-            "P1": {
+            "p1": {
                 'common_name': "Guy N'Gosso",
                 'id': 'p92554',
                 'informations': {
@@ -185,7 +185,7 @@ def test_replace_jsonpath():
                 'picture': 'base64',
                 'logo': '<svg></svg>'
             },
-            "P2": {
+            "p2": {
                 'common_name': "Guy N'Gosso",
                 'id': 'p92554',
                 'informations': {
@@ -209,11 +209,11 @@ def test_replace_jsonpath():
     lineup = root.xpath('//n:g[@class=\'repeat\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
     assert len(lineup) == 1
     assert not lineup[0].xpath('//n:g[@class=\'template\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
-
+    assert len(lineup[0].getchildren()) > 0
     for c in lineup[0].getchildren():
         assert c.attrib['transform'] != 'translate(0,0)'
-        text = c.xpath('//n:text/text()', namespaces={'n': 'http://www.w3.org/2000/svg'})
-        assert text == "Guy N'Gosso"
+        texts = c.getchildren()
+        assert texts[0].text == "Guy N'Gosso"
 
     logo = root.xpath('//n:image[@id = \'logo1\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
     assert len(logo) == 1

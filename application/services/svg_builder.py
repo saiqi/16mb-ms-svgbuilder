@@ -268,12 +268,24 @@ class SvgBuilderService(object):
 
             for i in range(size):
                 new_node = etree.Element('{http://www.w3.org/2000/svg}g')
-                current_x = parser.parse(xPosTemplate.replace('{{k0}}', str(i)).replace('{{k1}}', str(i+1)))
-                current_y = parser.parse(yPosTemplate.replace('{{k0}}', str(i)).replace('{{k1}}', str(i+1)))
+                current_x_path = parser.parse(xPosTemplate.replace('{{k0}}', str(i)).replace('{{k1}}', str(i+1)))
+                current_y_path = parser.parse(yPosTemplate.replace('{{k0}}', str(i)).replace('{{k1}}', str(i+1)))
+
+                try:
+                    current_x = current_x_path.find(results)[0].value
+                except:
+                    raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(current_x_path))
+
+                try:
+                    current_y = current_y_path.find(results)[0].value
+                except:
+                    raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(current_y_path))
+
                 new_node.set('transform', 'translate({},{})'.format(current_x, current_y))
                 for c in template.getchildren():
                     el_str = etree.tostring(c).decode('utf-8').replace('{{k0}}', str(i)).replace('{{k1}}', str(i+1))
                     new_node.append(etree.fromstring(el_str.encode('utf-8')))
+                n.append(new_node)
 
             n.remove(template)
 

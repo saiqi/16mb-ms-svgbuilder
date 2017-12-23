@@ -59,6 +59,23 @@ TEMPLATE = '''
      d="m 100,50 a 50,50 0 1 0 40.450849718747364,79.38926261462365"
      style="fill:none;stroke:#875274;stroke-width:10"
      inkscape:connector-curvature="0" />
+  <g
+     id="g1021"
+     yPosition="$.query.soccer_match_player_lineup[{{k0}}].y"
+     xPosition="$.query.soccer_match_player_lineup[{{k0}}].x"
+     nRepeat="11"
+     class="repeat">
+    <g
+       id="g1019"
+       transform="translate(0,0)"
+       class="template">
+      <text
+         x="67.895271"
+         y="110.03716"
+         content="$.referential.p{{k1}}.common_name"
+         id="text999">label</text>
+    </g>
+  </g>
 </svg>
 '''
 
@@ -83,6 +100,44 @@ def test_replace_jsonpath():
                 {'total': 48 + 56, 'away_value': 48.0, 'home_value': 56.0, 'type': 'Duels perdus'},
                 {'total': 1., 'away_value': 0.59, 'home_value': 0.41, 'type': 'Possession'},
                 {'total': 7, 'away_value': 3.0, 'home_value': 4.0, 'type': 'Corners joués'}
+            ],
+            "soccer_match_player_lineup": [
+                {
+                    "player_id": "p44413",
+                    "side": "Away",
+                    "nb_goals": 0,
+                    "nb_yellow": 0,
+                    "rank_match": 1,
+                    "nb_assists": 0,
+                    "type": "Buts encaissés",
+                    "value": 1,
+                    "nb_red": 0,
+                    "team_id": "t144",
+                    "x": 5,
+                    "is_success_rate": False,
+                    "rank_season": 138,
+                    "nb_subon": 0,
+                    "y": 25,
+                    "formation_place": "P1"
+                },
+                {
+                    "player_id": "p109404",
+                    "side": "Away",
+                    "nb_goals": 0,
+                    "nb_yellow": 0,
+                    "rank_match": 4,
+                    "nb_assists": 0,
+                    "type": "Dégagements",
+                    "value": 3,
+                    "nb_red": 0,
+                    "team_id": "t144",
+                    "x": 20,
+                    "is_success_rate": False,
+                    "rank_season": 858,
+                    "nb_subon": 1,
+                    "y": 45,
+                    "formation_place": "P2"
+                }
             ]
         },
         'referential': {
@@ -114,12 +169,51 @@ def test_replace_jsonpath():
                 'id': 'f920618',
                 'provider': 'opta_f9',
                 'type': 'game'
+            },
+            "P1": {
+                'common_name': "Guy N'Gosso",
+                'id': 'p92554',
+                'informations': {
+                    'first_name': 'Guy',
+                    'id': 'p92554',
+                    'known': "Guy N'Gosso",
+                    'last_name': "N'Gosso Massouma",
+                    'type': 'player'
+                },
+                'provider': 'opta_f9',
+                'type': 'soccer player',
+                'picture': 'base64',
+                'logo': '<svg></svg>'
+            },
+            "P2": {
+                'common_name': "Guy N'Gosso",
+                'id': 'p92554',
+                'informations': {
+                    'first_name': 'Guy',
+                    'id': 'p92554',
+                    'known': "Guy N'Gosso",
+                    'last_name': "N'Gosso Massouma",
+                    'type': 'player'
+                },
+                'provider': 'opta_f9',
+                'type': 'soccer player',
+                'picture': 'base64',
+                'logo': '<svg></svg>'
             }
         }
     }
     service = worker_factory(SvgBuilderService)
     converted = service.replace_jsonpath(TEMPLATE, results)
     root = etree.fromstring(converted)
+
+    lineup = root.xpath('//n:g[@class=\'repeat\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
+    assert len(lineup) == 1
+    assert not lineup[0].xpath('//n:g[@class=\'template\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
+
+    for c in lineup[0].getchildren():
+        assert c.attrib['transform'] != 'translate(0,0)'
+        text = c.xpath('//n:text/text()', namespaces={'n': 'http://www.w3.org/2000/svg'})
+        assert text == "Guy N'Gosso"
 
     logo = root.xpath('//n:image[@id = \'logo1\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
     assert len(logo) == 1

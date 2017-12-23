@@ -248,9 +248,41 @@ class SvgBuilderService(object):
             if is_default is True and 'disappearDefault' in n.attrib and n.attrib['disappearDefault'] == 'true':
                 n.attrib['style'] = '{};{}'.format(n.attrib['style'], 'display: none')
 
+    @staticmethod
+    def _handle_repeat(nodes, results):
+        for n in nodes:
+            if 'nRepeat' not in n.attrib:
+                raise SvgBuilderError('No nRepeat attribute in repeat node')
+
+            if 'xPosition' not in n.attrib or 'yPosition' not in n.attrib:
+                raise SvgBuilderError('No xPosition or yPosition in repeat node')
+
+            size = int(n.attrib['nRepeat'])
+            xPosTemplate = n.attrib['xPosition']
+            yPosTemplate = n.attrib['yPosition']
+
+            try:
+                template = n.xpath('//n:g[@class=\'template\']', namespaces={'n': 'http://www.w3.org/2000/svg'})[0]
+            except:
+                raise SvgBuilderError('No template element in repeat node')
+
+            for i in range(size):
+                new_node = etree.Element('{http://www.w3.org/2000/svg}g')
+                current_x = parser.parse(xPosTemplate.replace('{{k0}}', str(i)).replace('{{k1}}', str(i+1)))
+                current_y = parser.parse(yPosTemplate.replace('{{k0}}', str(i)).replace('{{k1}}', str(i+1)))
+                new_node.set('transform', 'translate({},{})'.format(current_x, current_y))
+                for c in template.getchildren():
+                    el_str = etree.tostring(c).decode('utf-8').replace('{{k0}}', str(i)).replace('{{k1}}', str(i+1))
+                    new_node.append(etree.fromstring(el_str.encode('utf-8')))
+
+            n.remove(template)
+
     @rpc
     def replace_jsonpath(self, svg_string, results):
         root = etree.fromstring(svg_string.replace('\n', '').encode('utf-8'))
+
+        repeat_nodes = root.xpath('//n:g[@class=\'repeat\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
+        self._handle_repeat(repeat_nodes, results)
 
         text_nodes = root.xpath('//n:text[@content]', namespaces={'n': 'http://www.w3.org/2000/svg'})
         self._handle_text_tag(text_nodes, results)

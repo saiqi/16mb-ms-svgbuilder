@@ -257,9 +257,14 @@ class SvgBuilderService(object):
             if 'xPosition' not in n.attrib or 'yPosition' not in n.attrib:
                 raise SvgBuilderError('No xPosition or yPosition in repeat node')
 
+            if 'xReference' not in n.attrib or 'yReference' not in n.attrib:
+                raise SvgBuilderError('No xReference or yReference in repeat node')
+
             size = int(n.attrib['nRepeat'])
             xPosTemplate = n.attrib['xPosition']
             yPosTemplate = n.attrib['yPosition']
+            xReference = int(n.attrib['xReference'])
+            yReference = int(n.attrib['yReference'])
 
             try:
                 template = n.xpath('//n:g[@class=\'template\']', namespaces={'n': 'http://www.w3.org/2000/svg'})[0]
@@ -272,14 +277,17 @@ class SvgBuilderService(object):
                 current_y_path = parser.parse(yPosTemplate.replace('{{k0}}', str(i)).replace('{{k1}}', str(i+1)))
 
                 try:
-                    current_x = current_x_path.find(results)[0].value
+                    current_x_ratio = current_x_path.find(results)[0].value
                 except:
                     raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(current_x_path))
 
                 try:
-                    current_y = current_y_path.find(results)[0].value
+                    current_y_ratio = current_y_path.find(results)[0].value
                 except:
                     raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(current_y_path))
+
+                current_x = current_x_ratio * xReference
+                current_y = current_y_ratio * yReference
 
                 new_node.set('transform', 'translate({},{})'.format(current_x, current_y))
                 for c in template.getchildren():

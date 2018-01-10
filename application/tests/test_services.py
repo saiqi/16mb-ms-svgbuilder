@@ -63,6 +63,8 @@ TEMPLATE = '''
      id="g1021"
      yPosition="$.query.soccer_match_player_lineup[{{k0}}].y"
      xPosition="$.query.soccer_match_player_lineup[{{k0}}].x"
+     xReference="500"
+     yReference="250"
      nRepeat="2"
      class="repeat">
     <g

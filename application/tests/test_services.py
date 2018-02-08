@@ -78,6 +78,9 @@ TEMPLATE = '''
          id="text999">label</text>
     </g>
   </g>
+  <g class="resizeable" id="myresizeable" adjustSize="$.query.soccer_match_advanced_player_stats[1].value">
+      <rect height="6.8889999" id="rect155081" style="fill:#c5ddec" width="106.117" x="87.707817" y="200.10043"/>
+  </g>
 </svg>
 '''
 
@@ -231,3 +234,8 @@ def test_replace_jsonpath():
     ellipse = root.xpath('//n:path[@id = \'path4867\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
     assert len(ellipse) == 1
     assert 'display: none' in ellipse[0].attrib['style']
+
+    resizeable = root.xpath('//n:g[@class=\'resizeable\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
+    assert len(resizeable) == 1
+    assert 'transform' in resizeable[0].attrib
+    assert resizeable[0].attrib['transform'] == 'scale(1.0,1.0)'

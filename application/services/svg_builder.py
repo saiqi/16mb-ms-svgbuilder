@@ -297,6 +297,21 @@ class SvgBuilderService(object):
 
             n.remove(template)
 
+    @staticmethod
+    def _handle_resizeable(nodes, results):
+        for n in nodes:
+            if 'adjustSize' not in n.attrib:
+                raise SvgBuilderError('No adjustSize attribute in resizeable node')
+
+            current_coef_path = parser.parse(n.attrib['adjustSize'])
+
+            try:
+                current_coef = current_coef_path.find(results)[0].value
+            except:
+                raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(current_coef_path))
+
+            n.set('transform', 'scale({c},{c})'.format(c=current_coef))
+
     @rpc
     def replace_jsonpath(self, svg_string, results):
         root = etree.fromstring(svg_string.replace('\n', '').encode('utf-8'))
@@ -318,5 +333,8 @@ class SvgBuilderService(object):
 
         color_nodes = root.xpath('//*[@colorValue]')
         self._handle_colors(color_nodes, results)
+
+        resizeable_nodes = root.xpath('//n:g[@class=\'resizeable\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
+        self._handle_resizeable(resizeable_nodes, results)
 
         return etree.tostring(root).decode('utf-8')

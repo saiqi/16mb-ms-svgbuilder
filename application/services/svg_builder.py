@@ -48,7 +48,7 @@ class SvgBuilderService(object):
 
         split = math.modf(value)
 
-        if split[1] < 10:
+        if split[1] < 10 and split[0] > 0:
             return round(value, 2)
 
         return round(value)

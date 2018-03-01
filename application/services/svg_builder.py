@@ -42,6 +42,18 @@ class SvgBuilderService(object):
                 node.append(tspan_node)
 
     @staticmethod
+    def _format_float(value):
+        if type(value) != float:
+            return value
+
+        split = math.modf(value)
+
+        if split[1] < 10:
+            return round(value, 2)
+
+        return round(value)
+
+    @staticmethod
     def _handle_text_tag(nodes, results):
         for n in nodes:
             path = parser.parse(n.get('content'))
@@ -58,6 +70,8 @@ class SvgBuilderService(object):
 
             has_tpan = len(spans) > 0
 
+            current_value = SvgBuilderService._format_float(values[0].value)
+
             if 'percentage' in n.attrib:
                 percentage_path = parser.parse(n.get('percentage'))
                 is_percentage = percentage_path.find(results)
@@ -66,11 +80,11 @@ class SvgBuilderService(object):
                     raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('percentage')))
 
                 if is_percentage[0].value is True:
-                    text = str(round(100*values[0].value)) + '%'
+                    text = str(100*current_value) + '%'
                 else:
-                    text = str(round(values[0].value))
+                    text = str(current_value)
             else:
-                text = str(values[0].value)
+                text = str(current_value)
 
             if has_tpan is True:
                 spans[0].text = text

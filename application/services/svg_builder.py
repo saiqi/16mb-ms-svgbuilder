@@ -48,7 +48,11 @@ class SvgBuilderService(object):
 
         split = math.modf(value)
 
-        if split[1] < 10 and split[0] > 0:
+        if split[0] > 1.e-16:
+            if split[1] > 100:
+                return round(value)
+            if split[1] > 10:
+                return round(value, 1)
             return round(value, 2)
 
         return round(value)
@@ -80,7 +84,7 @@ class SvgBuilderService(object):
                     raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('percentage')))
 
                 if is_percentage[0].value is True:
-                    text = str(100*current_value) + '%'
+                    text = str(round(100*current_value)) + '%'
                 else:
                     text = str(current_value)
             else:

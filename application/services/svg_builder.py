@@ -19,17 +19,21 @@ class SvgBuilderService(object):
 
     @staticmethod
     def _handle_text_length(node, text):
-        if len(text) < 35:
+        width = 35
+        if 'maxLength' in node.attrib:
+            width = int(node.attrib['maxLength'])
+
+        if len(text) < width:
             node.text = text
         else:
             node.text = None
-            break_text = textwrap.fill(text, width=35)
+            break_text = textwrap.wrap(text, width=width)
 
             x = node.attrib['x']
             y = node.attrib['y']
 
             cpt = 0
-            for t in break_text.split('\n'):
+            for t in break_text:
                 tspan_node = etree.Element('tspan', nsmap = {'svg': 'http://www.w3.org/2000/svg'})
                 tspan_node.attrib['x'] = x
                 if cpt > 0:

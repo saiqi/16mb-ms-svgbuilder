@@ -214,6 +214,8 @@ def test_replace_jsonpath():
     converted = service.replace_jsonpath(TEMPLATE, results)
     root = etree.fromstring(converted)
 
+    assert 'width' not in root.attrib and 'height' not in root.attrib
+
     lineup = root.xpath('//n:g[@class=\'repeat\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
     assert len(lineup) == 1
     assert not lineup[0].xpath('//n:g[@class=\'template\']', namespaces={'n': 'http://www.w3.org/2000/svg'})

@@ -30,11 +30,11 @@ class SvgBuilderService(object):
             break_text = textwrap.wrap(text, width=width)
 
             x = node.attrib['x']
-            y = node.attrib['y']
 
             cpt = 0
             for t in break_text:
-                tspan_node = etree.Element('tspan', nsmap = {'svg': 'http://www.w3.org/2000/svg'})
+                tspan_node = etree.Element(
+                    'tspan', nsmap={'svg': 'http://www.w3.org/2000/svg'})
                 tspan_node.attrib['x'] = x
                 if cpt > 0:
                     tspan_node.attrib['dy'] = "1em"
@@ -69,12 +69,15 @@ class SvgBuilderService(object):
             values = path.find(results)
 
             if len(values) != 1:
-                raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('content')))
+                raise SvgBuilderError(
+                    'Too many or no values related to JSON Path {}'.format(n.get('content')))
 
-            spans = n.xpath('./n:tspan', namespaces={'n': 'http://www.w3.org/2000/svg'})
+            spans = n.xpath(
+                './n:tspan', namespaces={'n': 'http://www.w3.org/2000/svg'})
 
             if len(spans) > 1:
-                raise SvgBuilderError('Too many tspan tags related to text node')
+                raise SvgBuilderError(
+                    'Too many tspan tags related to text node')
 
             has_tpan = len(spans) > 0
 
@@ -85,7 +88,8 @@ class SvgBuilderService(object):
                 is_percentage = percentage_path.find(results)
 
                 if len(is_percentage) != 1:
-                    raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('percentage')))
+                    raise SvgBuilderError(
+                        'Too many or no values related to JSON Path {}'.format(n.get('percentage')))
 
                 if is_percentage[0].value is True:
                     text = str(round(100*current_value)) + '%'
@@ -107,15 +111,18 @@ class SvgBuilderService(object):
             values = path.find(results)
 
             if 'isVectorial' not in n.attrib:
-                raise SvgBuilderError('Picture node without any isVectorial attribute')
+                raise SvgBuilderError(
+                    'Picture node without any isVectorial attribute')
 
             is_svg = n.get('isVectorial') == 'true'
 
             if len(values) != 1:
-                raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('content')))
+                raise SvgBuilderError(
+                    'Too many or no values related to JSON Path {}'.format(n.get('content')))
 
             if is_svg is True:
-                n.attrib['{http://www.w3.org/1999/xlink}href'] = 'data:image/svg+xml;utf8,' + html.escape(values[0].value)
+                n.attrib['{http://www.w3.org/1999/xlink}href'] = 'data:image/svg+xml;utf8,' + \
+                    html.escape(values[0].value)
             else:
                 n.attrib['{http://www.w3.org/1999/xlink}href'] = 'data:image/png;base64,' + values[0].value
 
@@ -128,12 +135,14 @@ class SvgBuilderService(object):
             values = value_path.find(results)
 
             if len(values) != 1:
-                raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('currentValue')))
+                raise SvgBuilderError(
+                    'Too many or no values related to JSON Path {}'.format(n.get('currentValue')))
 
             ref_values = ref_path.find(results)
 
             if len(ref_values) != 1:
-                raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('refValue')))
+                raise SvgBuilderError(
+                    'Too many or no values related to JSON Path {}'.format(n.get('refValue')))
 
             value = values[0].value
             ref_value = ref_values[0].value
@@ -166,12 +175,14 @@ class SvgBuilderService(object):
             values = value_path.find(results)
 
             if len(values) != 1:
-                raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('currentValue')))
+                raise SvgBuilderError(
+                    'Too many or no values related to JSON Path {}'.format(n.get('currentValue')))
 
             ref_values = ref_path.find(results)
 
             if len(ref_values) != 1:
-                raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('refValue')))
+                raise SvgBuilderError(
+                    'Too many or no values related to JSON Path {}'.format(n.get('refValue')))
 
             is_inverted = False
             if 'origin' in n.attrib:
@@ -193,8 +204,10 @@ class SvgBuilderService(object):
 
             d = n.get('d')
             try:
-                arc_d = list(filter(lambda x: x!='', re.search(r'[A|a]([\d+.\-, ]+)', d).group(1).split(' ')))
-                center_d = list(filter(lambda x: x!='', re.search(r'[M|m]([\d+.\-, ]+)', d).group(1).split(' ')))
+                arc_d = list(filter(lambda x: x != '', re.search(
+                    r'[A|a]([\d+.\-, ]+)', d).group(1).split(' ')))
+                center_d = list(filter(lambda x: x != '', re.search(
+                    r'[M|m]([\d+.\-, ]+)', d).group(1).split(' ')))
             except:
                 raise SvgBuilderError('Bad formated d attribute in path')
 
@@ -241,7 +254,8 @@ class SvgBuilderService(object):
             values = value_path.find(results)
 
             if len(values) != 1:
-                raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(n.get('colorValue')))
+                raise SvgBuilderError(
+                    'Too many or no values related to JSON Path {}'.format(n.get('colorValue')))
 
             value = values[0].value
 
@@ -263,12 +277,14 @@ class SvgBuilderService(object):
 
                     if prop[0] == 'fill':
                         old_color = prop[1]
-                        n.attrib['style'] = n.attrib['style'].replace(old_color, color)
+                        n.attrib['style'] = n.attrib['style'].replace(
+                            old_color, color)
             else:
                 n.attrib['style'] = 'fill:{};'.format(color)
 
             if is_default is True and 'disappearDefault' in n.attrib and n.attrib['disappearDefault'] == 'true':
-                n.attrib['style'] = '{};{}'.format(n.attrib['style'], 'display: none')
+                n.attrib['style'] = '{};{}'.format(
+                    n.attrib['style'], 'display: none')
 
     @staticmethod
     def _handle_repeat(nodes, results):
@@ -277,10 +293,12 @@ class SvgBuilderService(object):
                 raise SvgBuilderError('No nRepeat attribute in repeat node')
 
             if 'xPosition' not in n.attrib or 'yPosition' not in n.attrib:
-                raise SvgBuilderError('No xPosition or yPosition in repeat node')
+                raise SvgBuilderError(
+                    'No xPosition or yPosition in repeat node')
 
             if 'xReference' not in n.attrib or 'yReference' not in n.attrib:
-                raise SvgBuilderError('No xReference or yReference in repeat node')
+                raise SvgBuilderError(
+                    'No xReference or yReference in repeat node')
 
             size = int(n.attrib['nRepeat'])
             xPosTemplate = n.attrib['xPosition']
@@ -289,31 +307,38 @@ class SvgBuilderService(object):
             yReference = int(n.attrib['yReference'])
 
             try:
-                template = n.xpath('//n:g[@class=\'template\']', namespaces={'n': 'http://www.w3.org/2000/svg'})[0]
+                template = n.xpath(
+                    '//n:g[@class=\'template\']', namespaces={'n': 'http://www.w3.org/2000/svg'})[0]
             except:
                 raise SvgBuilderError('No template element in repeat node')
 
             for i in range(size):
                 new_node = etree.Element('{http://www.w3.org/2000/svg}g')
-                current_x_path = parser.parse(xPosTemplate.replace('{{k0}}', str(i)).replace('{{k1}}', str(i+1)))
-                current_y_path = parser.parse(yPosTemplate.replace('{{k0}}', str(i)).replace('{{k1}}', str(i+1)))
+                current_x_path = parser.parse(xPosTemplate.replace(
+                    '{{k0}}', str(i)).replace('{{k1}}', str(i+1)))
+                current_y_path = parser.parse(yPosTemplate.replace(
+                    '{{k0}}', str(i)).replace('{{k1}}', str(i+1)))
 
                 try:
                     current_x_ratio = current_x_path.find(results)[0].value
                 except:
-                    raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(current_x_path))
+                    raise SvgBuilderError(
+                        'Too many or no values related to JSON Path {}'.format(current_x_path))
 
                 try:
                     current_y_ratio = current_y_path.find(results)[0].value
                 except:
-                    raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(current_y_path))
+                    raise SvgBuilderError(
+                        'Too many or no values related to JSON Path {}'.format(current_y_path))
 
                 current_x = current_x_ratio * xReference
                 current_y = current_y_ratio * yReference
 
-                new_node.set('transform', 'translate({},{})'.format(current_x, current_y))
+                new_node.set('transform', 'translate({},{})'.format(
+                    current_x, current_y))
                 for c in template.getchildren():
-                    el_str = etree.tostring(c).decode('utf-8').replace('{{k0}}', str(i)).replace('{{k1}}', str(i+1))
+                    el_str = etree.tostring(c).decode(
+                        'utf-8').replace('{{k0}}', str(i)).replace('{{k1}}', str(i+1))
                     new_node.append(etree.fromstring(el_str.encode('utf-8')))
                 n.append(new_node)
 
@@ -323,40 +348,63 @@ class SvgBuilderService(object):
     def _handle_resizeable(nodes, results):
         for n in nodes:
             if 'adjustSize' not in n.attrib:
-                raise SvgBuilderError('No adjustSize attribute in resizeable node')
+                raise SvgBuilderError(
+                    'No adjustSize attribute in resizeable node')
 
             current_coef_path = parser.parse(n.attrib['adjustSize'])
 
             try:
                 current_coef = current_coef_path.find(results)[0].value
             except:
-                raise SvgBuilderError('Too many or no values related to JSON Path {}'.format(current_coef_path))
+                raise SvgBuilderError(
+                    'Too many or no values related to JSON Path {}'.format(current_coef_path))
 
             n.set('transform', 'scale({c},{c})'.format(c=current_coef))
+
+    @staticmethod
+    def _make_responsive(root):
+        if 'width' in root.attrib:
+            del root.attrib['width']
+        if 'height' in root.attrib:
+            del root.attrib['height']
 
     @rpc
     def replace_jsonpath(self, svg_string, results):
         root = etree.fromstring(svg_string.replace('\n', '').encode('utf-8'))
 
-        repeat_nodes = root.xpath('//n:g[@class=\'repeat\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
+        repeat_nodes = root.xpath(
+            '//n:g[@class=\'repeat\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
         self._handle_repeat(repeat_nodes, results)
 
-        text_nodes = root.xpath('//n:text[@content]', namespaces={'n': 'http://www.w3.org/2000/svg'})
+        text_nodes = root.xpath(
+            '//n:text[@content]', namespaces={'n': 'http://www.w3.org/2000/svg'})
         self._handle_text_tag(text_nodes, results)
 
-        rect_nodes = root.xpath('//n:rect[@currentValue]', namespaces={'n': 'http://www.w3.org/2000/svg'})
+        rect_nodes = root.xpath(
+            '//n:rect[@currentValue]', namespaces={'n': 'http://www.w3.org/2000/svg'})
         self._handle_rect(rect_nodes, results)
 
-        images_nodes = root.xpath('//n:image[@content]', namespaces={'n': 'http://www.w3.org/2000/svg'})
+        images_nodes = root.xpath(
+            '//n:image[@content]', namespaces={'n': 'http://www.w3.org/2000/svg'})
         self._handle_images(images_nodes, results)
 
-        ellipse_nodes = root.xpath('//n:path[@currentValue and @class=\'ellipse\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
+        ellipse_nodes = root.xpath(
+            '//n:path[@currentValue and @class=\'ellipse\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
         self._handle_ellipse(ellipse_nodes, results)
 
         color_nodes = root.xpath('//*[@colorValue]')
         self._handle_colors(color_nodes, results)
 
-        resizeable_nodes = root.xpath('//n:g[@class=\'resizeable\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
+        resizeable_nodes = root.xpath(
+            '//n:g[@class=\'resizeable\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
         self._handle_resizeable(resizeable_nodes, results)
 
+        self._make_responsive(root)
+        
+        return etree.tostring(root).decode('utf-8')
+
+    @rpc
+    def make_responsive(self, svg_string):
+        root = etree.fromstring(svg_string.replace('\n', '').encode('utf-8'))
+        self._make_responsive(root)
         return etree.tostring(root).decode('utf-8')

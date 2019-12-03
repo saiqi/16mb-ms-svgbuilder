@@ -81,6 +81,25 @@ TEMPLATE = '''
          id="text999">label</text>
     </g>
   </g>
+  <g
+     id="g1022"
+     yPosition="$.query.soccer_match_player_lineup[{{k0}}].y"
+     xPosition="$.query.soccer_match_player_lineup[{{k0}}].x"
+     xReference="500"
+     yReference="250"
+     nRepeat="$.query.soccer_match_player_lineup"
+     class="repeat">
+    <g
+       id="g10123"
+       transform="translate(0,0)"
+       class="template">
+      <text
+         x="67.895271"
+         y="110.03716"
+         content="$.referential.p{{k1}}.common_name"
+         id="text999">label</text>
+    </g>
+  </g>
   <g class="resizeable" id="myresizeable" adjustSize="$.query.soccer_match_advanced_player_stats[1].value">
       <rect height="6.8889999" id="rect155081" style="fill:#c5ddec" width="106.117" x="87.707817" y="200.10043"/>
   </g>
@@ -217,7 +236,7 @@ def test_replace_jsonpath():
     assert 'width' not in root.attrib and 'height' not in root.attrib
 
     lineup = root.xpath('//n:g[@class=\'repeat\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
-    assert len(lineup) == 1
+    assert len(lineup) == 2
     assert not lineup[0].xpath('//n:g[@class=\'template\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
     assert len(lineup[0].getchildren()) > 0
     for c in lineup[0].getchildren():

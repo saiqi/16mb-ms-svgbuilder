@@ -300,7 +300,11 @@ class SvgBuilderService(object):
                 raise SvgBuilderError(
                     'No xReference or yReference in repeat node')
 
-            size = int(n.attrib['nRepeat'])
+            if n.attrib['nRepeat'].isdigit():
+                size = int(n.attrib['nRepeat'])
+            else:
+                query = parser.parse(n.attrib['nRepeat']).find(results)[0].value
+                size = len(query)
             xPosTemplate = n.attrib['xPosition']
             yPosTemplate = n.attrib['yPosition']
             xReference = int(n.attrib['xReference'])
@@ -400,7 +404,7 @@ class SvgBuilderService(object):
         self._handle_resizeable(resizeable_nodes, results)
 
         self._make_responsive(root)
-        
+
         return etree.tostring(root).decode('utf-8')
 
     @rpc

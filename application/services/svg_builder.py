@@ -1,7 +1,7 @@
 import math
 import re
 import json
-import html
+import base64
 import textwrap
 
 from nameko.rpc import rpc
@@ -121,8 +121,8 @@ class SvgBuilderService(object):
                     'Too many or no values related to JSON Path {}'.format(n.get('content')))
 
             if is_svg is True:
-                n.attrib['{http://www.w3.org/1999/xlink}href'] = 'data:image/svg+xml;utf8,' + \
-                    html.escape(values[0].value)
+                n.attrib['{http://www.w3.org/1999/xlink}href'] = 'data:image/svg+xml;base64,' + \
+                    base64.b64encode(values[0].value.encode('utf-8')).decode('utf-8')
             else:
                 n.attrib['{http://www.w3.org/1999/xlink}href'] = 'data:image/png;base64,' + values[0].value
 

@@ -1,7 +1,6 @@
 import math
 import re
 import json
-import base64
 import textwrap
 
 from nameko.rpc import rpc
@@ -104,7 +103,7 @@ class SvgBuilderService(object):
                 SvgBuilderService._handle_text_length(n, text)
 
     @staticmethod
-    def _handle_images(nodes, results):
+    def _handle_images(nodes, results, defs):
         for n in nodes:
             path = parser.parse(n.get('content'))
 
@@ -121,8 +120,11 @@ class SvgBuilderService(object):
                     'Too many or no values related to JSON Path {}'.format(n.get('content')))
 
             if is_svg is True:
-                n.attrib['{http://www.w3.org/1999/xlink}href'] = 'data:image/svg+xml;base64,' + \
-                    base64.b64encode(values[0].value.encode('utf-8')).decode('utf-8')
+                svg = SvgBuilderService._handle_embedded_svg(values[0].value)
+                svg_id = svg.attrib['id']
+                defs.append(svg)
+                n.tag = '{http://www.w3.org/2000/svg}use'
+                n.attrib['{http://www.w3.org/1999/xlink}href'] = '#' + svg_id
             else:
                 n.attrib['{http://www.w3.org/1999/xlink}href'] = 'data:image/png;base64,' + values[0].value
 
@@ -372,9 +374,34 @@ class SvgBuilderService(object):
         if 'height' in root.attrib:
             del root.attrib['height']
 
+    @staticmethod
+    def _handle_embedded_svg(svg_string):
+        svg = etree.fromstring(svg_string.encode('utf-8'))
+
+        if 'id' not in svg.attrib:
+            raise SvgBuilderError('Please specify an id into embedded SVG')
+
+        for a in ('width', 'height', 'viewBox'):
+            if a in svg.attrib:
+                del svg.attrib[a]
+
+        return svg
+
+    @staticmethod
+    def _set_defs(root):
+        xp = root.xpath(
+            './n:defs', namespaces={'n': 'http://www.w3.org/2000/svg'})
+
+        if not xp:
+            return etree.SubElement(root, '{http://www.w3.org/2000/svg}defs')
+        
+        return xp[0]
+
     @rpc
     def replace_jsonpath(self, svg_string, results):
         root = etree.fromstring(svg_string.replace('\n', '').encode('utf-8'))
+
+        defs = SvgBuilderService._set_defs(root)
 
         repeat_nodes = root.xpath(
             '//n:g[@class=\'repeat\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
@@ -390,7 +417,7 @@ class SvgBuilderService(object):
 
         images_nodes = root.xpath(
             '//n:image[@content]', namespaces={'n': 'http://www.w3.org/2000/svg'})
-        self._handle_images(images_nodes, results)
+        self._handle_images(images_nodes, results, defs)
 
         ellipse_nodes = root.xpath(
             '//n:path[@currentValue and @class=\'ellipse\']', namespaces={'n': 'http://www.w3.org/2000/svg'})

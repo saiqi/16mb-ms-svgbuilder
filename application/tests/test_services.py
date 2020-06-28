@@ -25,8 +25,8 @@ TEMPLATE = '''
   <text content="$.query.soccer_match_advanced_player_stats[0].value" percentage="$.query.soccer_match_advanced_player_stats[0].is_success_rate" id="text6090" sodipodi:linespacing="125%" style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" x="195.07384" xml:space="preserve" y="205.22029">
     <tspan id="tspan6092" sodipodi:role="line" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.5px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start" x="195.07384" y="205.22029">placeholder</tspan>
   </text>
-  <image id="pic1" content="$.referential.man_of_game.picture" isVectorial="false" xlink:href="foo"/>
-  <image id="logo1" content="$.referential.man_of_game.logo" isVectorial="true" xlink:href="bar"/>
+  <image id="pic1" content="$.referential.p1.picture" isVectorial="false" xlink:href="foo"/>
+  <image id="logo1" content="$.referential.man_of_game.picture" isVectorial="true" xlink:href="bar"/>
   <path
        id="path4865"
        class="ellipse"
@@ -180,8 +180,7 @@ def test_replace_jsonpath():
                 },
                 'provider': 'opta_f9',
                 'type': 'soccer player',
-                'picture': 'base64',
-                'logo': '<svg></svg>'
+                'picture': '<svg id=\"myid\"></svg>'
             },
             'match': {
                 'common_name': 'Amiens - Bordeaux',
@@ -209,8 +208,7 @@ def test_replace_jsonpath():
                 },
                 'provider': 'opta_f9',
                 'type': 'soccer player',
-                'picture': 'base64',
-                'logo': '<svg></svg>'
+                'picture': 'base64'
             },
             "p2": {
                 'common_name': "Guy N'Gosso",
@@ -224,8 +222,7 @@ def test_replace_jsonpath():
                 },
                 'provider': 'opta_f9',
                 'type': 'soccer player',
-                'picture': 'base64',
-                'logo': '<svg></svg>'
+                'picture': 'base64'
             }
         }
     }
@@ -244,8 +241,10 @@ def test_replace_jsonpath():
         texts = c.getchildren()
         assert texts[0].text == "Guy N'Gosso"
 
-    logo = root.xpath('//n:image[@id = \'logo1\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
+    logo = root.xpath('//n:use[@id = \'logo1\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
+    assert root.xpath('./n:defs/n:svg[@id = \'myid\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
     assert len(logo) == 1
+    assert logo[0].attrib['{http://www.w3.org/1999/xlink}href'] == '#myid'
 
     ellipse = root.xpath('//n:path[@id = \'path4865\']', namespaces={'n': 'http://www.w3.org/2000/svg'})
     assert len(ellipse) == 1

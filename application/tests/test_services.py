@@ -262,3 +262,21 @@ def test_replace_jsonpath():
     assert len(resizeable) == 1
     assert 'transform' in resizeable[0].attrib
     assert resizeable[0].attrib['transform'] == 'scale(1.0,1.0)'
+
+
+def test_clean_for_export():
+    svg_string = '''
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+        <defs>
+            <svg id="myid" viewBox="0 0 10 20"></svg>
+        </defs>
+    </svg>
+    '''
+
+    service = worker_factory(SvgBuilderService)
+    res = service.clean_for_export(svg_string)
+
+    root = etree.fromstring(res.encode('utf-8'))
+    embeded = root.xpath('./n:defs/n:svg', namespaces={'n': 'http://www.w3.org/2000/svg'})[0]
+    assert embeded.attrib['id'] == 'myid'
+    assert 'viewBox' not in embeded

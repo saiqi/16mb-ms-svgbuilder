@@ -439,3 +439,14 @@ class SvgBuilderService(object):
         root = etree.fromstring(svg_string.replace('\n', '').encode('utf-8'))
         self._make_responsive(root)
         return etree.tostring(root).decode('utf-8')
+
+    @rpc
+    def clean_for_export(self, svg_string):
+        root = etree.fromstring(svg_string.replace('\n', '').encode('utf-8'))
+
+        # clean defs for embeded SVG
+        for n in root.xpath('./n:defs/n:svg', namespaces={'n': 'http://www.w3.org/2000/svg'}):
+            if 'viewBox' in n.attrib:
+                del n.attrib['viewBox']
+
+        return etree.tostring(root).decode('utf-8')

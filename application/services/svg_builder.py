@@ -381,9 +381,9 @@ class SvgBuilderService(object):
         if 'id' not in svg.attrib:
             raise SvgBuilderError('Please specify an id into embedded SVG')
 
-        for a in ('width', 'height', 'viewBox'):
-            if a in svg.attrib:
-                del svg.attrib[a]
+        # for a in ('width', 'height', 'viewBox'):
+        #     if a in svg.attrib:
+        #         del svg.attrib[a]
 
         return svg
 

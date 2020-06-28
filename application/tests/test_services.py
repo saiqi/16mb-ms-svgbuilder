@@ -268,7 +268,7 @@ def test_clean_for_export():
     svg_string = '''
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
         <defs>
-            <svg id="myid" viewBox="0 0 10 20"></svg>
+            <svg id="myid" width="10" height="20" viewBox="0 0 10 20"></svg>
         </defs>
     </svg>
     '''
@@ -279,4 +279,5 @@ def test_clean_for_export():
     root = etree.fromstring(res.encode('utf-8'))
     embeded = root.xpath('./n:defs/n:svg', namespaces={'n': 'http://www.w3.org/2000/svg'})[0]
     assert embeded.attrib['id'] == 'myid'
-    assert 'viewBox' not in embeded
+    assert 'width' not in embeded
+    assert 'height' not in embeded

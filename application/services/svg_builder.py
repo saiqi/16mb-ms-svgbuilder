@@ -446,7 +446,6 @@ class SvgBuilderService(object):
 
         # clean defs for embeded SVG
         for n in root.xpath('./n:defs/n:svg', namespaces={'n': 'http://www.w3.org/2000/svg'}):
-            if 'viewBox' in n.attrib:
-                del n.attrib['viewBox']
+            SvgBuilderService._make_responsive(n)
 
         return etree.tostring(root).decode('utf-8')

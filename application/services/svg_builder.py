@@ -30,6 +30,7 @@ class SvgBuilderError(Exception):
 class SvgBuilderService(object):
 
     name = 'svg_builder'
+    error = ErrorHandler()
 
     @staticmethod
     def _handle_text_length(node, text):

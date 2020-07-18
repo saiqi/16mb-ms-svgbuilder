@@ -2,10 +2,25 @@ import math
 import re
 import json
 import textwrap
+from logging import getLogger
 
 from nameko.rpc import rpc
+from nameko.dependency_providers import DependencyProvider
 from lxml import etree
 from jsonpath_rw import parser
+
+
+_log = getLogger(__name__)
+
+
+class ErrorHandler(DependencyProvider):
+
+    def worker_result(self, worker_ctx, res, exc_info):
+        if exc_info is None:
+            return
+
+        exc_type, exc, tb = exc_info
+        _log.error(str(exc))
 
 
 class SvgBuilderError(Exception):

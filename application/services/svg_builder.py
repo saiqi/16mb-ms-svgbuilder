@@ -264,11 +264,6 @@ class SvgBuilderService(object):
     def _handle_colors(nodes, results):
         for n in nodes:
             value_path = parser.parse(n.get('colorValue'))
-            color_mapping = dict()
-            for c in n.get('colorMapping').split(';'):
-                k, v = c.split(':')
-                color_mapping[k.strip()] = v.strip()
-
             values = value_path.find(results)
 
             if len(values) != 1:
@@ -279,14 +274,21 @@ class SvgBuilderService(object):
 
             is_default = False
 
-            try:
-                color = color_mapping[value]
-            except KeyError:
-                try:
-                    color = color_mapping[str(value)]
-                except KeyError:
-                    is_default = True
-                    color = color_mapping['default']
+            if n.get('colorMapping'):
+                color_mapping = dict()
+                for c in n.get('colorMapping').split(';'):
+                    k, v = c.split(':')
+                    color_mapping[k.strip()] = v.strip()
+                    try:
+                        color = color_mapping[value]
+                    except KeyError:
+                        try:
+                            color = color_mapping[str(value)]
+                        except KeyError:
+                            is_default = True
+                            color = color_mapping['default']
+            else:
+                color = value
 
             if 'style' in n.attrib:
                 styles = n.get('style').split(';')
@@ -300,7 +302,7 @@ class SvgBuilderService(object):
             else:
                 n.attrib['style'] = 'fill:{};'.format(color)
 
-            if is_default is True and 'disappearDefault' in n.attrib and n.attrib['disappearDefault'] == 'true':
+            if is_default and n.get('disappearDefault', 'false') == 'true':
                 n.attrib['style'] = '{};{}'.format(
                     n.attrib['style'], 'display: none')
 

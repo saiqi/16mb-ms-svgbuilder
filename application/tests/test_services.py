@@ -27,6 +27,8 @@ TEMPLATE = '''
   </text>
   <image id="pic1" content="$.referential.p1.picture" isVectorial="false" xlink:href="foo"/>
   <image id="logo1" content="$.referential.man_of_game.picture" isVectorial="true" xlink:href="bar"/>
+  <text id="colorBlue" content="$.query.soccer_match_team_infos[0].team_id" colorValue="$.query.soccer_match_team_infos[0].color"/>
+  <text id="colorRed" content="$.query.soccer_match_team_infos[0].team_id" colorValue="$.query.soccer_match_team_infos[0].color"/>
   <path
        id="path4865"
        class="ellipse"
@@ -117,8 +119,8 @@ def test_replace_jsonpath():
                 {'max_value': 4.0, 'rank_match': 1, 'type': 'Tirs non cadrés', 'value': 4.0, 'is_success_rate': False},
             ],
             'soccer_match_team_infos': [
-                {'score': 1, 'side': 'Home', 'team_id': 'Amiens'},
-                {'score': 0, 'side': 'Away', 'team_id': 'Bordeaux'}
+                {'score': 1, 'side': 'Home', 'team_id': 'Amiens', 'color': 'blue'},
+                {'score': 0, 'side': 'Away', 'team_id': 'Bordeaux', 'color': 'red'}
             ],
             'soccer_match_teamstat': [
                 {'total': 436 + 275, 'away_value': 436.0, 'home_value': 275.0, 'type': 'Passes réussies'},
@@ -262,6 +264,9 @@ def test_replace_jsonpath():
     assert len(resizeable) == 1
     assert 'transform' in resizeable[0].attrib
     assert resizeable[0].attrib['transform'] == 'scale(1.0,1.0)'
+
+    blue = root.xpath('//n:text[@id = \'colorBlue\']', namespaces={'n': 'http://www.w3.org/2000/svg'})[0]
+    assert 'fill:blue' in blue.get('style')
 
 
 def test_clean_for_export():

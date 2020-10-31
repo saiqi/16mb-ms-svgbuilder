@@ -286,3 +286,12 @@ def test_clean_for_export():
     assert embeded.attrib['id'] == 'myid'
     assert 'width' not in embeded
     assert 'height' not in embeded
+
+
+def test_staging_failure():
+    import json
+    query_result = json.load(open('./application/tests/result.json', 'r', encoding='utf-8'))
+    template = open('./application/tests/template.svg', encoding='utf-8').read()
+
+    service = worker_factory(SvgBuilderService)
+    result = service.replace_jsonpath(template, query_result)

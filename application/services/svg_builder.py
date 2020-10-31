@@ -275,18 +275,17 @@ class SvgBuilderService(object):
             is_default = False
 
             if n.get('colorMapping'):
-                color_mapping = dict()
-                for c in n.get('colorMapping').split(';'):
-                    k, v = c.split(':')
-                    color_mapping[k.strip()] = v.strip()
+                color_mapping = {c.split(':')[0].strip(): c.split(':')[1].strip() 
+                for c in n.get('colorMapping').split(';')}
+                
+                try:
+                    color = color_mapping[value]
+                except KeyError:
                     try:
-                        color = color_mapping[value]
+                        color = color_mapping[str(value)]
                     except KeyError:
-                        try:
-                            color = color_mapping[str(value)]
-                        except KeyError:
-                            is_default = True
-                            color = color_mapping['default']
+                        is_default = True
+                        color = color_mapping['default']
             else:
                 color = value
 

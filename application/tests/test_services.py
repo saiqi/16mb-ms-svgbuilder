@@ -29,6 +29,7 @@ TEMPLATE = '''
   <image id="logo1" content="$.referential.man_of_game.picture" isVectorial="true" xlink:href="bar"/>
   <text id="colorBlue" content="$.query.soccer_match_team_infos[0].team_id" colorValue="$.query.soccer_match_team_infos[0].color"/>
   <text id="colorRed" content="$.query.soccer_match_team_infos[0].team_id" colorValue="$.query.soccer_match_team_infos[0].color"/>
+  <text id="colorGreen" content="$.query.soccer_match_team_infos[0].team_id" colorValue="$.query.soccer_match_team_infos[0].color" textColor="light: #FFFFFF;dark: #000000"/>
   <path
        id="path4865"
        class="ellipse"
@@ -119,8 +120,8 @@ def test_replace_jsonpath():
                 {'max_value': 4.0, 'rank_match': 1, 'type': 'Tirs non cadrés', 'value': 4.0, 'is_success_rate': False},
             ],
             'soccer_match_team_infos': [
-                {'score': 1, 'side': 'Home', 'team_id': 'Amiens', 'color': 'blue'},
-                {'score': 0, 'side': 'Away', 'team_id': 'Bordeaux', 'color': 'red'}
+                {'score': 1, 'side': 'Home', 'team_id': 'Amiens', 'color': '#000000'},
+                {'score': 0, 'side': 'Away', 'team_id': 'Bordeaux', 'color': '#FFFFFF'}
             ],
             'soccer_match_teamstat': [
                 {'total': 436 + 275, 'away_value': 436.0, 'home_value': 275.0, 'type': 'Passes réussies'},
@@ -266,7 +267,10 @@ def test_replace_jsonpath():
     assert resizeable[0].attrib['transform'] == 'scale(1.0,1.0)'
 
     blue = root.xpath('//n:text[@id = \'colorBlue\']', namespaces={'n': 'http://www.w3.org/2000/svg'})[0]
-    assert 'fill:blue' in blue.get('style')
+    assert 'fill:#000000' in blue.get('style')
+
+    blue = root.xpath('//n:text[@id = \'colorGreen\']', namespaces={'n': 'http://www.w3.org/2000/svg'})[0]
+    assert 'fill:#FFFFFF' in blue.get('style')
 
 
 def test_clean_for_export():

@@ -1,6 +1,5 @@
 import math
 import re
-import json
 import textwrap
 from logging import getLogger
 
@@ -75,6 +74,22 @@ class SvgBuilderService(object):
             return round(value, 2)
 
         return round(value)
+
+    @staticmethod
+    def _hex_to_rgb(value):
+        clean_value = value.lstrip('#')
+        return tuple(int(clean_value[i:i+2], 16) for i in (0, 2, 4))
+
+    @staticmethod
+    def _is_dark(value):
+        r, g, b = SvgBuilderService._hex_to_rgb(value)
+        hsp = math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b))
+        return hsp < 127.5
+
+    @staticmethod
+    def _parse_color_mapping(node, attr_name):
+        return {c.split(':')[0].strip(): c.split(':')[1].strip() 
+                for c in node.get(attr_name).split(';')}
 
     @staticmethod
     def _handle_text_tag(nodes, results):
@@ -275,8 +290,7 @@ class SvgBuilderService(object):
             is_default = False
 
             if n.get('colorMapping'):
-                color_mapping = {c.split(':')[0].strip(): c.split(':')[1].strip() 
-                for c in n.get('colorMapping').split(';')}
+                color_mapping = SvgBuilderService._parse_color_mapping(n, 'colorMapping')
                 
                 try:
                     color = color_mapping[value]
@@ -286,6 +300,10 @@ class SvgBuilderService(object):
                     except KeyError:
                         is_default = True
                         color = color_mapping['default']
+            elif n.get('textColor'):
+                mapping = SvgBuilderService._parse_color_mapping(n, 'textColor')
+                color = mapping.get('light', '#FFFFFF') if SvgBuilderService._is_dark(value)\
+                    else mapping.get('dark', '#000000')
             else:
                 color = value
 
